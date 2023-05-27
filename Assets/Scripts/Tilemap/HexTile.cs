@@ -14,8 +14,10 @@ public class HexTile : MonoBehaviour
 
     public int detFertility = 0; // 植物造成的肥力影响
     public int tempFertility = 0;// 预览种植效果时的临时影响
+    
+    [Header("数值显示")]
     public GameObject fertilityDisplay = null;
-    public GameObject addDisplay = null;
+    public GameObject increaseDisplay = null;
 
     [Header("杂项")]
     public bool destroying = false;
@@ -37,10 +39,18 @@ public class HexTile : MonoBehaviour
         return result;
     }
 
-    public bool CanPlant(Plant plant)
+    public bool CanPlant(Plant plant, int rotationIndex)
     {
         if (Plant != null) return false;
-        return fertility >= plant.fertilityAcquire;
+        foreach (var acquire in Plant.GetComponent<Plant>().fertilityAcquire)
+        {
+            int x, y;
+            (x, y) = HexTilemap.RotateCoord(acquire.x, acquire.y, rotationIndex);
+            int newq = coordQ + x, newr = coordR + y;
+            var tile_acquire = tilemap.tiles[(newq, newr)].GetComponent<HexTile>();
+            if (tile_acquire.fertility < acquire.z) return false;
+        }
+        return true;
     }
 
     public bool isEmpty()
@@ -95,7 +105,7 @@ public class HexTile : MonoBehaviour
                 innerRenderer.material.SetFloat("_Value", math.clamp(value, 0, 1) + Time.deltaTime * 0.8f);
         }
         fertilityDisplay.GetComponent<TextMeshPro>().SetText(string.Format("{0:d}", fertility + detFertility + tempFertility));
-        var textmesh = addDisplay.GetComponent<TextMeshPro>();
+        var textmesh = increaseDisplay.GetComponent<TextMeshPro>();
         if (tempFertility != 0)
         {
             if (tempFertility > 0)

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Xml.Xsl;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 using UnityEngine.UIElements;
 
 public class HexTilemap : MonoBehaviour
@@ -52,6 +53,18 @@ public class HexTilemap : MonoBehaviour
         var tile = tiles[(q, r)].GetComponent<HexTile>();
         if (tile == null || tile.destroying) return null;
         return tile;
+    }
+
+    public void RecomputeAllFertility()
+    {
+        // clear everthing
+        foreach (var tile in tiles.Values)
+            tile.GetComponent<HexTile>().ClearAll();
+        // compute basic fertility
+        foreach (var tile in tiles.Values)
+            tile.GetComponent<HexTile>().UpdateFertility();
+        // compute X fertility
+
     }
 
     void AddRotate(int det) // 1 or -1
@@ -127,18 +140,17 @@ public class HexTilemap : MonoBehaviour
         if (AutoFillTile && !Input.GetMouseButton(0))
             DoAutoFillTile();
 
-        if (Input.GetKeyDown(KeyCode.Q)){
+        if (Input.GetKeyDown(KeyCode.Q)){ // rotate plant
             AddRotate(-1);
         }
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.E)) // rotate plant
         {
             AddRotate(1);
         }
 
-        // clear temp values
         foreach (var tile in tiles.Values)
         {
-            tile.GetComponent<HexTile>().tempFertility= 0;
+            tile.GetComponent<HexTile>().tempFertility= 0;// clear temp values
         }
 
         foreach (var hit in Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition)))
@@ -149,17 +161,7 @@ public class HexTilemap : MonoBehaviour
                 var tile = target.GetComponent<HexTile>();
                 int q, r;
                 (q, r) = (tile.coordQ, tile.coordR);
-                if (Input.GetMouseButton(0))
-                {
-                    //if (tile.destroying)
-                    //    continue;
-                    //if (tiles.ContainsKey((tile.coordQ, tile.coordR)))
-                    //    tiles.Remove((tile.coordQ, tile.coordR));
-                    //tile.destroying = true;
-                    //Destroy(target, 3);
-
-
-                }
+                Debug.Log((q, r));
                 if (CurrentPlant != null)
                 {
                     var plant = CurrentPlant.GetComponent<Plant>();
@@ -169,14 +171,14 @@ public class HexTilemap : MonoBehaviour
                         {
                             tile.RemovePlantFromTile();
                         }
-                        else if (tile.CanPlant(plant))//种植植物
+                        else if (tile.CanPlant(plant, rotateCnt))//种植植物
                         {
                             tile.AddPlantToTile(Instantiate(PlantPrefab, tile.transform), rotateCnt);
                         }
                     }
                     else
                     { //预览种植
-                        if (tile.CanPlant(plant))
+                        if (tile.CanPlant(plant, rotateCnt))
                         {
                             foreach (var effect in plant.fertilityEffect)
                             {

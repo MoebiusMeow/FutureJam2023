@@ -12,6 +12,7 @@ public class Plant : MonoBehaviour
     public List<Vector3Int> fertilityEffect = new List<Vector3Int>();
 
     [Header("XÔö·ÊÐ§¹û")]
+    public bool useX = false;
     public Vector2Int XPos= new Vector2Int(0,0);
     public List<Vector3Int> fertilityXEffect = new List<Vector3Int>();
 

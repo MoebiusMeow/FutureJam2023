@@ -425,7 +425,7 @@ MonoBehaviour:
   detFertility: 0
   tempFertility: 0
   fertilityDisplay: {fileID: 3620347535254624462}
-  addDisplay: {fileID: 3890318436382722400}
+  increaseDisplay: {fileID: 3890318436382722400}
   destroying: 0
   innerRenderer: {fileID: 7439183743204198537}
   tilemap: {fileID: 0}

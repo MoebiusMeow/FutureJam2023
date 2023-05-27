@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using Unity.Mathematics;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class HexTile : MonoBehaviour
@@ -27,6 +28,9 @@ public class HexTile : MonoBehaviour
     [Header("Ö²Îï")]
     public GameObject Plant = null;
 
+    static private int search_count = 0;
+    private int search_tag = 0;
+
     public List<HexTile> GetExistingNeighbors()
     {
         List<HexTile> result = new();
@@ -42,7 +46,7 @@ public class HexTile : MonoBehaviour
     public bool CanPlant(Plant plant, int rotationIndex)
     {
         if (Plant != null) return false;
-        foreach (var acquire in Plant.GetComponent<Plant>().fertilityAcquire)
+        foreach (var acquire in plant.GetComponent<Plant>().fertilityAcquire)
         {
             int x, y;
             (x, y) = HexTilemap.RotateCoord(acquire.x, acquire.y, rotationIndex);
@@ -53,23 +57,59 @@ public class HexTile : MonoBehaviour
         return true;
     }
 
+    public void ClearAll()
+    {
+        detFertility = tempFertility = search_count = search_tag = 0;
+    }
+
+    public bool isXTile()
+    {
+        if (Plant == null) return false;
+        var plant = Plant.GetComponent<Plant>();
+        if (!plant.useX) return false;
+        return true;
+    }
+
+    public bool isXInput(int q, int r)
+    {
+        if (!isXTile()) return false;
+        var plant = Plant.GetComponent<Plant>();
+        return q == coordQ + plant.XPos.x && r == coordR + plant.XPos.y;
+    }
+
+    public bool isXOutput(int q, int r)
+    {
+        if (!isXTile()) return false;
+        var plant = Plant.GetComponent<Plant>();
+        foreach (var xoutput in plant.fertilityXEffect)
+            if (q == coordQ + xoutput.x && r == coordR + xoutput.y) return true;
+        return false;
+    }
+
     public bool isEmpty()
     {
         return Plant== null;
     }
 
-    public void AddPlantToTile(GameObject plant, int rotationIndex)
+    public void UpdateFertility()
     {
-        Plant = plant;
-        foreach (var effect in Plant.GetComponent<Plant>().fertilityEffect)
+        var plant = Plant.GetComponent<Plant>();
+        foreach (var effect in plant.fertilityEffect)
         {
             int x, y;
-            (x, y) = HexTilemap.RotateCoord(effect.x, effect.y, rotationIndex);
+            (x, y) = HexTilemap.RotateCoord(effect.x, effect.y, plant.rotateCnt);
             int newq = coordQ + x, newr = coordR + y;
             var tile_fertilize = tilemap.tiles[(newq, newr)].GetComponent<HexTile>();
             tile_fertilize.detFertility += effect.z;
         }
-        Plant.GetComponent<Plant>().rotateCnt = rotationIndex;
+    }
+
+    public void AddPlantToTile(GameObject newPlant, int rotationIndex)
+    {
+        Plant = newPlant;
+        var plant = Plant.GetComponent<Plant>();
+        plant.rotateCnt = rotationIndex;
+        UpdateFertility();
     }
 
     public void RemovePlantFromTile()

@@ -1,8 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Xsl;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.Tilemaps;
+using UnityEngine.UIElements;
 
 public class HexTilemap : MonoBehaviour
 {
@@ -17,6 +20,12 @@ public class HexTilemap : MonoBehaviour
     public bool AutoFillTile = false;
     public GameObject TilePrefab = null;
 
+    [Header("当前选择的要种植的植物")]
+    public GameObject PlantPrefab = null;
+    private GameObject CurrentPlant = null;
+
+    private int rotateCnt = 0;
+
     /// 六边形的长轴为z轴
     static public readonly Vector3 UnitQ = new Vector3(Mathf.Sqrt(3) * 0.5f, 0, 0.5f);
     static public readonly Vector3 UnitR = new Vector3(0, 0, -1);
@@ -25,6 +34,15 @@ public class HexTilemap : MonoBehaviour
     static public int CoordDistance(int q1, int r1, int q2 = 0, int r2 = 0) => (math.abs(q1 - q2) + math.abs(q1 + r1 - q2 - r2) + math.abs(r1 - r2)) / 2;
     public Vector3 CoordToPosition(int q, int r) => CoordToPosition(q, r, CellSize);
 
+    static public (int,int) RotateCoord(int q, int r) => (-r, q + r);
+    static public (int,int) RotateCoord(int q, int r, int cnt)
+    {
+        for (int i=0; i<cnt; i++)
+        {
+            (q, r) = RotateCoord(q, r);
+        }
+        return (q,r);
+    }
     /// <summary>
     /// 包含的图格的GameObject，其应该挂着一个HexTile行为
     /// </summary>
@@ -35,6 +53,25 @@ public class HexTilemap : MonoBehaviour
         var tile = tiles[(q, r)].GetComponent<HexTile>();
         if (tile == null || tile.destroying) return null;
         return tile;
+    }
+
+    public void RecomputeAllFertility()
+    {
+        // clear everthing
+        foreach (var tile in tiles.Values)
+            tile.GetComponent<HexTile>().ClearAll();
+        // compute basic fertility
+        foreach (var tile in tiles.Values)
+            tile.GetComponent<HexTile>().UpdateFertility();
+        // compute X fertility
+
+    }
+
+    void AddRotate(int det) // 1 or -1
+    {
+        rotateCnt += det;
+        if (rotateCnt >= 6) rotateCnt = 0;
+        if (rotateCnt < 0) rotateCnt = 5;
     }
 
     /// <summary>
@@ -91,27 +128,75 @@ public class HexTilemap : MonoBehaviour
 
     void Start()
     {
+        CurrentPlant = Instantiate(PlantPrefab, transform);
+        CurrentPlant.transform.Translate(transform.position + new Vector3(10000,10000,1000));
     }
+
+    
+
 
     void Update()
     {
         if (AutoFillTile && !Input.GetMouseButton(0))
             DoAutoFillTile();
-        if (Input.GetMouseButton(0))
-        if (Input.GetMouseButton(0))
-            foreach (var hit in Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition)))
+
+        if (Input.GetKeyDown(KeyCode.Q)){ // rotate plant
+            AddRotate(-1);
+        }
+        if (Input.GetKeyDown(KeyCode.E)) // rotate plant
+        {
+            AddRotate(1);
+        }
+
+        foreach (var tile in tiles.Values)
+        {
+            tile.GetComponent<HexTile>().tempFertility= 0;// clear temp values
+        }
+
+        foreach (var hit in Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition)))
+        {
+            var target = hit.collider.gameObject;
+            if (target.GetComponent<HexTile>() != null)
             {
-                var target = hit.collider.gameObject;
-                if (target.GetComponent<HexTile>() != null)
+                var tile = target.GetComponent<HexTile>();
+                int q, r;
+                (q, r) = (tile.coordQ, tile.coordR);
+                Debug.Log((q, r));
+                if (CurrentPlant != null)
                 {
-                    var tile = target.GetComponent<HexTile>();
-                    if (tile.destroying)
-                        continue;
-                    if (tiles.ContainsKey((tile.coordQ, tile.coordR)))
-                        tiles.Remove((tile.coordQ, tile.coordR));
-                    tile.destroying = true;
-                    Destroy(target, 3);
+                    var plant = CurrentPlant.GetComponent<Plant>();
+                    if (Input.GetMouseButtonDown(0)) //左键点击
+                    { 
+                        if (Input.GetKey(KeyCode.R))// 铲除植物
+                        {
+                            tile.RemovePlantFromTile();
+                        }
+                        else if (tile.CanPlant(plant, rotateCnt))//种植植物
+                        {
+                            tile.AddPlantToTile(Instantiate(PlantPrefab, tile.transform), rotateCnt);
+                        }
+                    }
+                    else
+                    { //预览种植
+                        if (tile.CanPlant(plant, rotateCnt))
+                        {
+                            foreach (var effect in plant.fertilityEffect)
+                            {
+                                int x, y;
+                                (x, y) = RotateCoord(effect.x, effect.y, rotateCnt);
+                                int newq = q + x, newr = r + y;
+                                if (tiles.ContainsKey((newq, newr)))
+                                {
+                                    var tile_fertilize = tiles[(newq, newr)].GetComponent<HexTile>();
+                                    tile_fertilize.tempFertility = effect.z;
+                                }
+                            }
+                        }
+                    }
+                        
                 }
+
             }
+        }
     }
 }

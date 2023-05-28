@@ -5,7 +5,7 @@ using TMPro;
 
 /*
  Sidebar.prefab 是一个底边栏，提供交互功能，并维护当前选中的植物。
- 它绑定到本脚本，本脚本提供如下四个接口：
+ 它绑定到本脚本，本脚本提供如下五个接口：
 
     public void AddPlant(int type, int id);
     这个函数将会添加类型为 `type`，编号为 `id` 的植物到底边栏。
@@ -18,6 +18,9 @@ using TMPro;
 
     public void Tuck();
     这个函数会把所有弹出的子栏目收起。
+
+    public void SetSeedNumber(int id, int number);
+    这个函数将 id 为 `id` 的植物种子数量设置为 `number`。
  
  Scene ui 中的四个按钮分别对应这四个功能的测试。
 

@@ -17,19 +17,42 @@ public class Plant : MonoBehaviour
     public List<Vector3Int> fertilityXEffect = new List<Vector3Int>();
 
     [Header("½á¹û")]
-    public float tickToBearFruit = 0;
-    public float tickgrown = 0;
+    public float TimeToBearFruit = 0;
+    public float timeGrown = 0;
+
+    [Header("¿ÝÎ®")]
+    public float maxheath = 3;
+    public float health = 0;
 
     public int rotateCnt = 0;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        RestoreHealth();
     }
 
-    public void grow() { 
-        
+    public bool Grow(float val = 1)
+    {// return true if bear fruit
+        if (timeGrown < TimeToBearFruit)
+            timeGrown += val;
+        return timeGrown >= TimeToBearFruit;
+    }
+
+    public bool LooseHelth(float val =1) // return true if die
+    {
+        health -= val;
+        if(health <= 0)
+        {
+            health = 0;
+            return true;
+        }
+        return false;
+    }
+
+    public void RestoreHealth()
+    {
+        health = maxheath;
     }
 
     // Update is called once per frame

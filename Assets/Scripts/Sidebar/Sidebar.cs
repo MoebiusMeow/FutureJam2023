@@ -39,9 +39,6 @@ public class Sidebar : MonoBehaviour
     {
         AddPlantType(-1);
         AddPlantType(0);
-        AddPlant(1, 1);
-        AddPlant(2, 3);
-        AddPlant(2, 4);
     }
 
     // interface starts

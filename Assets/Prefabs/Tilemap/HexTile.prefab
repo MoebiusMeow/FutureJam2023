@@ -531,6 +531,8 @@ MonoBehaviour:
   stoneRenderer:
   - {fileID: 3031116139652901756}
   tilemap: {fileID: 0}
+  Plant: {fileID: 0}
+  search_tag: 0
 --- !u!64 &7174760750957929038
 MeshCollider:
   m_ObjectHideFlags: 0

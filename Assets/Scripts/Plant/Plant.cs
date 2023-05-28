@@ -17,12 +17,12 @@ public class Plant : MonoBehaviour
     public List<Vector3Int> fertilityXEffect = new List<Vector3Int>();
 
     [Header("½á¹û")]
-    public float tickToBearFruit = 0;
-    public float tickgrown = 0;
+    public float TimeToBearFruit = 0;
+    public float timeGrown = 0;
 
     [Header("¿ÝÎ®")]
-    public float maxheath = 10;
-    public float health = 10;
+    public float maxheath = 3;
+    public float health = 0;
 
     public int rotateCnt = 0;
 
@@ -32,14 +32,14 @@ public class Plant : MonoBehaviour
         RestoreHealth();
     }
 
-    public bool Grow(int val = 1)
+    public bool Grow(float val = 1)
     {// return true if bear fruit
-        if (tickgrown < tickToBearFruit)
-            tickgrown += val;
-        return tickgrown >= tickToBearFruit;
+        if (timeGrown < TimeToBearFruit)
+            timeGrown += val;
+        return timeGrown >= TimeToBearFruit;
     }
 
-    public bool LooseHelth(int val =1) // return true if die
+    public bool LooseHelth(float val =1) // return true if die
     {
         health -= val;
         if(health <= 0)

@@ -111,10 +111,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a913b476da424df4fb8357d9fa100814, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fertilityAcquire: 0
+  fertilityAcquire: []
   fertilityEffect:
   - {x: 1, y: 0, z: 1}
   - {x: 0, y: -1, z: 1}
   - {x: -1, y: 1, z: 1}
   - {x: 2, y: 0, z: 2}
-  timeToBearFruit: 100
+  useX: 0
+  XPos: {x: 0, y: 0}
+  fertilityXEffect: []
+  TimeToBearFruit: 0
+  timeGrown: 0
+  maxheath: 2
+  health: 2
+  rotateCnt: 0

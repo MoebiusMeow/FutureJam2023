@@ -82,7 +82,7 @@ public class HexTilemap : MonoBehaviour
         if (tile == null) return true;
         if (search_id>0 && search_id == tile.search_tag)
         {
-            Debug.Log((q, r));
+            // Debug.Log((q, r));
             return false;
         }
             
@@ -148,7 +148,11 @@ public class HexTilemap : MonoBehaviour
     void RemovePlant(int q, int r)
     {
         var tile = GetTile(q, r);
-        if (tile == null || tile.Plant == null) return;
+        if (tile == null || tile.Plant == null)
+        {
+            //Debug.Log("Null plant or tile");
+            return;
+        }
         var plant  = tile.Plant.GetComponent<Plant>();
         if (plant == null) return;
         if (plant.useX)
@@ -198,7 +202,8 @@ public class HexTilemap : MonoBehaviour
         foreach (var Tile in tiles.Values)
         {
             var tile = Tile.GetComponent<HexTile>();
-            if (tile.goingToDie > 0) tile.RemovePlant();
+            if (tile.goingToDie > 0)
+                tile.RemovePlant();
             tile.goingToDie = 0;
         }
     }
@@ -274,7 +279,7 @@ public class HexTilemap : MonoBehaviour
             CurrentPlant = Instantiate(PlantPrefab[plantIndex], transform);
             CurrentPlant.transform.Translate(transform.position + new Vector3(10000, 10000, 1000));
             CurrentPlantIndex = plantIndex;
-            Debug.LogFormat("Current Plant:{0:d}", plantIndex);
+            //Debug.LogFormat("Current Plant:{0:d}", plantIndex);
         }
     }
 
@@ -282,9 +287,6 @@ public class HexTilemap : MonoBehaviour
     {
         SwitchPlant(-1);
     }
-
-    
-
 
     void Update()
     {
@@ -298,12 +300,19 @@ public class HexTilemap : MonoBehaviour
         {
             AddRotate(1);
         }
-
-        foreach (var tile in tiles.Values)
+        ClearAllTempValue();
+        foreach (var Tile in tiles.Values)
         {
-            tile.GetComponent<HexTile>().tempFertility= 0;// clear temp values
+            var tile = Tile.GetComponent<HexTile>();
+            if (tile.Plant!=null && tile.Plant.GetComponent<Plant>().health <= 0)
+            {
+                RemovePlant(tile.coordQ, tile.coordR);
+                //Debug.LogFormat("TryRemove {0:d} {1:d} {2:d}", tile.coordQ, tile.coordR, tile.goingToDie);
+            }
             tile.GetComponent<HexTile>().updateHighlight(0);
         }
+        ApplyAllTempFertility();
+        ApplyAllKillPlant();
 
         foreach (var hit in Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition)))
         {
@@ -352,7 +361,7 @@ public class HexTilemap : MonoBehaviour
                 {
                     var plant = CurrentPlant.GetComponent<Plant>();
                     bool fg = tile.CanPlant(plant, rotateCnt);
-                    Debug.LogFormat("{0:d},{1:d}:{2:s}", q, r, fg.ToString());
+                    // Debug.LogFormat("{0:d},{1:d}:{2:s}", q, r, fg.ToString());
                     if (fg)
                     {
                         fg &= AddPlantTemporary(q, r, plant, rotateCnt);
@@ -407,13 +416,30 @@ public class HexTilemap : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             SwitchPlant(0);
-            Debug.Log("swicth 0");
+            //Debug.Log("swicth 0");
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             SwitchPlant(1);
-            Debug.Log("swicth 1");
+            //Debug.Log("swicth 1");
+        }
+    }
+
+
+    private void FixedUpdate()
+    {
+        foreach(var Tile in tiles.Values)
+        {
+            var tile = Tile.GetComponent<HexTile>();
+            if (tile != null && tile.Plant != null)
+            {
+                var plant = tile.Plant.GetComponent<Plant>();
+                if (plant != null && !tile.CheckPlantCanGrow(plant, plant.rotateCnt))
+                {
+                    plant.LooseHelth(Time.fixedDeltaTime); // 减少枯萎植物的生命值
+                }
+            }
         }
     }
 }

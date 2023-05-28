@@ -135,22 +135,9 @@ public class HexTile : MonoBehaviour
 
     public void RemovePlant()
     {
+        Debug.Log("Try Remove Plant");
         if (Plant == null) return;
-        Destroy(Plant);
-        Plant = null;
-    }
-
-    public void RemovePlantFromTile()
-    {
-        if (Plant == null) return;
-        foreach (var effect in Plant.GetComponent<Plant>().fertilityEffect)
-        {
-            int x, y;
-            (x, y) = HexTilemap.RotateCoord(effect.x, effect.y, Plant.GetComponent<Plant>().rotateCnt);
-            int newq = coordQ + x, newr = coordR + y;
-            var tile_fertilize = tilemap.tiles[(newq, newr)].GetComponent<HexTile>();
-            tile_fertilize.detFertility -= effect.z;
-        }
+        Debug.Log("Destorying Plant");
         Destroy(Plant);
         Plant = null;
     }
@@ -194,6 +181,8 @@ public class HexTile : MonoBehaviour
             }
         }
     }
+
+
 
     void Update()
     {

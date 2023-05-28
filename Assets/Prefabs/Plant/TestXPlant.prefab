@@ -118,6 +118,8 @@ MonoBehaviour:
   XPos: {x: -1, y: 0}
   fertilityXEffect:
   - {x: 1, y: 0, z: 1}
-  tickToBearFruit: 0
-  tickgrown: 0
+  TimeToBearFruit: 0
+  timeGrown: 0
+  maxheath: 2
+  health: 2
   rotateCnt: 0

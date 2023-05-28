@@ -62,6 +62,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventPrefab: {fileID: 2218944877177944124, guid: 6e85b823422a2a14796345404a69cf4c,
     type: 3}
+  infobar: {fileID: 1318806852452955646}
+  eventCount: 0
 --- !u!1001 &1670334458328710423
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -486,6 +488,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7ba85f93f4b41e2498edb0f16873ed1b, type: 3}
+--- !u!1 &1318806852452955646 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 388276653979715817, guid: 7ba85f93f4b41e2498edb0f16873ed1b,
+    type: 3}
+  m_PrefabInstance: {fileID: 1670334458328710423}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &3053574256583478281 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4417540631445467422, guid: 7ba85f93f4b41e2498edb0f16873ed1b,

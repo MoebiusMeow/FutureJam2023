@@ -8,10 +8,10 @@ using TMPro;
 public class Event : MonoBehaviour
 {
     public GameObject obj, titleText, introText, buttonText;
+    public UI parent;
 
     void Start()
     {
-
     }
 
     // Update is called once per frame
@@ -22,6 +22,7 @@ public class Event : MonoBehaviour
 
     public void OnClick()
     {
+        parent.eventCount -= 1;
         obj.SetActive(false);
     }
 

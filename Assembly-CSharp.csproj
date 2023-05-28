@@ -105,6 +105,7 @@
     <Compile Include="Assets\Scripts\CountdownAndDestroy.cs" />
     <Compile Include="Assets\Scripts\DissolveAndFadein.cs" />
     <Compile Include="Assets\Scripts\DissolveAndDestroy.cs" />
+    <Compile Include="Assets\Scripts\Sidebar\Infobar.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

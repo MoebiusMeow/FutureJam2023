@@ -45,6 +45,7 @@ public class Sidebar : MonoBehaviour
         AddPlantType(3);
         AddPlantType(-1);
         images[3].GetComponent<SidebarImage>().image.GetComponent<Button>().interactable = true;
+        DebugAddPlantall();
     }
 
     // interface starts
@@ -135,6 +136,20 @@ public class Sidebar : MonoBehaviour
         AddPlant(3, 7);
         AddPlant(1, 3);
         AddPlant(2, 5);
+    }
+    public void DebugAddPlantall()
+    {
+        AddPlant(1, 1);
+        AddPlant(1, 2);
+        AddPlant(1, 3);
+        AddPlant(1, 4);
+        AddPlant(1, 5);
+        AddPlant(2, 6);
+        AddPlant(2, 7);
+        AddPlant(2, 8);
+        AddPlant(3, 9);
+        AddPlant(3, 10);
+        AddPlant(3, 11);
     }
     public void DebugSetCurrentPlantIdTo233()
     {

@@ -39,6 +39,9 @@ public class HexTilemap : MonoBehaviour
 
     private List<string> PlantPrefabNames = new List<string>();
     private string PlantPrefabName = null;
+    private int currentPlantId = 0; // -2 delete -1 none >=0 plantindex
+
+    public GameObject SideBar = null;
 
     static public (int,int) RotateCoord(int q, int r) => (-r, q + r);
     static public (int,int) RotateCoord(int q, int r, int cnt)
@@ -277,6 +280,10 @@ public class HexTilemap : MonoBehaviour
             Destroy(CurrentPlant);
             CurrentPlant = null;
         }
+        if (plantIndex < 0)
+        {
+            return;
+        }
         if (plantIndex >=0 && plantIndex < PlantPrefab.Count() && PlantPrefab[plantIndex]!=null)
         {
             CurrentPlant = Instantiate(PlantPrefab[plantIndex], transform);
@@ -400,7 +407,7 @@ public class HexTilemap : MonoBehaviour
                 (q, r) = (tile.coordQ, tile.coordR);
                 // Debug.Log((q, r));
 
-                if (Input.GetKey(KeyCode.R))// 铲除植物
+                if (currentPlantId == -2)// 铲除植物
                 {
                     ClearAllTempValue();
                     if (Input.GetMouseButtonDown(0)) // 确定铲除
@@ -492,21 +499,21 @@ public class HexTilemap : MonoBehaviour
                     }
                         
                 }
-
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        if (SideBar != null)
         {
-            SwitchPlant(0);
-            //Debug.Log("swicth 0");
+            var sidebar = SideBar.GetComponent<Sidebar>();
+            if (sidebar != null)
+            {
+                if (sidebar.GetCurrentPlantId() != currentPlantId + 1)//注意这里加一！
+                {
+                    SwitchPlant(sidebar.GetCurrentPlantId()-1);
+                }
+            }
         }
-
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            SwitchPlant(1);
-            //Debug.Log("swicth 1");
-        }
+        
     }
 
 

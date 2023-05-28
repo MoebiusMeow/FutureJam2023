@@ -135,9 +135,9 @@ public class HexTile : MonoBehaviour
 
     public void RemovePlant()
     {
-        Debug.Log("Try Remove Plant");
+        //Debug.Log("Try Remove Plant");
         if (Plant == null) return;
-        Debug.Log("Destorying Plant");
+        //Debug.Log("Destorying Plant");
         Destroy(Plant);
         Plant = null;
     }

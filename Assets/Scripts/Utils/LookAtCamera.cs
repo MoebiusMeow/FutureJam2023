@@ -14,7 +14,7 @@ public class LookAtCamera : MonoBehaviour
     void Update()
     {
         var cameraDirection = transform.InverseTransformDirection(Camera.main.transform.forward);
-       
+        Debug.Log(cameraDirection);
         cameraDirection.z = 0;
         var angle = Vector3.Angle(Vector3.up, cameraDirection.normalized);
         transform.Rotate(new Vector3(0, 0 ,-angle));

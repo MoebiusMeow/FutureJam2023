@@ -322,7 +322,7 @@ public class HexTilemap : MonoBehaviour
                 var tile = target.GetComponent<HexTile>();
                 int q, r;
                 (q, r) = (tile.coordQ, tile.coordR);
-                // Debug.Log((q, r));
+                Debug.Log((q, r));
 
                 if (Input.GetKey(KeyCode.R))// ²ù³ýÖ²Îï
                 {

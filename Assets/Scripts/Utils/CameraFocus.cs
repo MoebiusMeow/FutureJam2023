@@ -20,7 +20,7 @@ public class CameraFocus : MonoBehaviour
     public float damping = 5.0f;
     Vector3 pos = Vector3.zero;
     public float moveSpeed = 5;
-    public float R = 9;
+    public float R = 11;
 
 
     void Start()

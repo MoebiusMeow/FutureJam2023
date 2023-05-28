@@ -5,6 +5,7 @@ using System.Xml.Xsl;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.Tilemaps;
 using UnityEngine.UIElements;
@@ -25,7 +26,7 @@ public class HexTilemap : MonoBehaviour
     [Header("当前选择的要种植的植物")]
     public List<GameObject> PlantPrefab = new List<GameObject>();
     public GameObject CurrentPlant = null;
-    private int CurrentPlantIndex = -1;
+    private int CurrentPlantIndex = -1; // -2 delete -1 none >=0 plantindex
 
     private int rotateCnt = 0;
 
@@ -39,7 +40,6 @@ public class HexTilemap : MonoBehaviour
 
     private List<string> PlantPrefabNames = new List<string>();
     private string PlantPrefabName = null;
-    private int currentPlantId = 0; // -2 delete -1 none >=0 plantindex
 
     public GameObject SideBar = null;
 
@@ -284,7 +284,7 @@ public class HexTilemap : MonoBehaviour
         {
             return;
         }
-        if (plantIndex >=0 && plantIndex < PlantPrefab.Count() && PlantPrefab[plantIndex]!=null)
+        if (plantIndex >= 0 && plantIndex < PlantPrefab.Count() && PlantPrefab[plantIndex] != null)
         {
             CurrentPlant = Instantiate(PlantPrefab[plantIndex], transform);
             CurrentPlant.transform.Translate(transform.position + new Vector3(10000, 10000, 1000));
@@ -397,117 +397,119 @@ public class HexTilemap : MonoBehaviour
         ApplyAllTempFertility();
         ApplyAllKillPlant();
 
-        foreach (var hit in Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition)))
-        {
-            var target = hit.collider.gameObject;
-            if (target.GetComponent<HexTile>() != null)
+        if (!EventSystem.current.IsPointerOverGameObject())
+            foreach (var hit in Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition)))
             {
-                var tile = target.GetComponent<HexTile>();
-                int q, r;
-                (q, r) = (tile.coordQ, tile.coordR);
-                // Debug.Log((q, r));
-
-                if (currentPlantId == -2)// 铲除植物
+                var target = hit.collider.gameObject;
+                if (target.GetComponent<HexTile>() != null)
                 {
-                    ClearAllTempValue();
-                    if (Input.GetMouseButtonDown(0)) // 确定铲除
+                    var tile = target.GetComponent<HexTile>();
+                    int q, r;
+                    (q, r) = (tile.coordQ, tile.coordR);
+                    // Debug.Log((q, r));
+
+                    if (CurrentPlantIndex == -2)// 铲除植物
                     {
-                        RemovePlant(q, r);
-                        ApplyAllTempFertility();
-                        ApplyAllKillPlant();
-                    }
-                    else //预览铲除
-                    {
-                        RemovePlant(q, r);
-                        while (TagAllDeadPlant())
+                        ClearAllTempValue();
+                        if (Input.GetMouseButtonDown(0)) // 确定铲除
                         {
+                            RemovePlant(q, r);
+                            ApplyAllTempFertility();
+                            ApplyAllKillPlant();
+                        }
+                        else //预览铲除
+                        {
+                            RemovePlant(q, r);
+                            while (TagAllDeadPlant())
+                            {
+                                foreach (var Tile in tiles.Values)
+                                {
+                                    var k_tile = Tile.GetComponent<HexTile>();
+                                    if (k_tile.goingToDie == 1)
+                                    {
+                                        RemovePlant(k_tile.coordQ, k_tile.coordR);
+                                    }
+                                }
+                            }
                             foreach (var Tile in tiles.Values)
                             {
                                 var k_tile = Tile.GetComponent<HexTile>();
-                                if (k_tile.goingToDie == 1)
+                                if (k_tile.goingToDie > 0)
+                                    k_tile.updateHighlight(4);// 警告受牵连的植物
+                                k_tile.goingToDie = 0;
+                            }
+                            tile.updateHighlight(3); //标记删除植物位置
+                        }
+                    }
+                    else if (CurrentPlant != null && CurrentPlantIndex >= 0 &&CurrentPlantIndex < PlantPrefab.Count())
+                    {
+                        var plant = CurrentPlant.GetComponent<Plant>();
+                        bool fg = tile.CanPlant(plant, rotateCnt);
+                        // Debug.LogFormat("{0:d},{1:d}:{2:s}", q, r, fg.ToString());
+                        if (fg)
+                        {
+                            fg &= AddPlantTemporary(q, r, plant, rotateCnt);
+                        }
+                        if (Input.GetMouseButtonDown(0)) //左键点击
+                        { 
+                            if (fg)//种植植物
+                            {
+                                tile.AddPlantToTile(Instantiate(PlantPrefab[CurrentPlantIndex], tile.transform), rotateCnt, PlantPrefabName);
+                                ApplyAllTempFertility();
+                            }
+                        }
+                        else
+                        { //预览种植相关
+                            if (fg)
+                            { //高亮加成格子
+                                int x, y;
+                                HexTile t_tile;
+                                foreach (var token in plant.fertilityAcquire)
                                 {
-                                    RemovePlant(k_tile.coordQ, k_tile.coordR);
+                                    (x, y) = RotateCoord(token.x, token.y, rotateCnt);
+                                    (x, y) = (q + x, r + y);
+                                    t_tile = GetTile(x, y);
+                                    if (t_tile) t_tile.updateHighlight(5);
+                                }
+                                foreach (var token in plant.fertilityEffect)
+                                {
+                                    (x, y) = RotateCoord(token.x, token.y, rotateCnt);
+                                    (x, y) = (q + x, r + y);
+                                    t_tile = GetTile(x, y);
+                                    if (t_tile) t_tile.updateHighlight(1);
+                                }
+                                foreach (var token in plant.fertilityXEffect)
+                                {
+                                    (x, y) = RotateCoord(token.x, token.y, rotateCnt);
+                                    (x, y) = (q + x, r + y);
+                                    t_tile = GetTile(x, y);
+                                    if (t_tile) t_tile.updateHighlight(1);
+                                }
+                                if (plant.useX)
+                                {
+                                    (x, y) = RotateCoord(plant.XPos.x, plant.XPos.y, rotateCnt);
+                                    (x, y) = (q + x, r + y);
+                                    t_tile = GetTile(x, y);
+                                    if (t_tile) t_tile.updateHighlight(2);
                                 }
                             }
-                        }
-                        foreach (var Tile in tiles.Values)
-                        {
-                            var k_tile = Tile.GetComponent<HexTile>();
-                            if (k_tile.goingToDie > 0)
-                                k_tile.updateHighlight(4);// 警告受牵连的植物
-                            k_tile.goingToDie = 0;
-                        }
-                        tile.updateHighlight(3); //标记删除植物位置
-                    }
-                }
-                else if (CurrentPlant != null && CurrentPlantIndex >= 0 &&CurrentPlantIndex < PlantPrefab.Count())
-                {
-                    var plant = CurrentPlant.GetComponent<Plant>();
-                    bool fg = tile.CanPlant(plant, rotateCnt);
-                    // Debug.LogFormat("{0:d},{1:d}:{2:s}", q, r, fg.ToString());
-                    if (fg)
-                    {
-                        fg &= AddPlantTemporary(q, r, plant, rotateCnt);
-                    }
-                    if (Input.GetMouseButtonDown(0)) //左键点击
-                    { 
-                        if (fg)//种植植物
-                        {
-                            tile.AddPlantToTile(Instantiate(PlantPrefab[CurrentPlantIndex], tile.transform), rotateCnt, PlantPrefabName);
-                            ApplyAllTempFertility();
-                        }
-                    }
-                    else
-                    { //预览种植相关
-                        if (fg)
-                        { //高亮加成格子
-                            int x, y;
-                            HexTile t_tile;
-                            foreach (var token in plant.fertilityAcquire)
+                            else//不能种
                             {
-                                (x, y) = RotateCoord(token.x, token.y, rotateCnt);
-                                (x, y) = (q + x, r + y);
-                                t_tile = GetTile(x, y);
-                                if (t_tile) t_tile.updateHighlight(5);
-                            }
-                            foreach (var token in plant.fertilityEffect)
-                            {
-                                (x, y) = RotateCoord(token.x, token.y, rotateCnt);
-                                (x, y) = (q + x, r + y);
-                                t_tile = GetTile(x, y);
-                                if (t_tile) t_tile.updateHighlight(1);
-                            }
-                            foreach (var token in plant.fertilityXEffect)
-                            {
-                                (x, y) = RotateCoord(token.x, token.y, rotateCnt);
-                                (x, y) = (q + x, r + y);
-                                t_tile = GetTile(x, y);
-                                if (t_tile) t_tile.updateHighlight(1);
-                            }
-                            if (plant.useX)
-                            {
-                                (x, y) = RotateCoord(plant.XPos.x, plant.XPos.y, rotateCnt);
-                                (x, y) = (q + x, r + y);
-                                t_tile = GetTile(x, y);
-                                if (t_tile) t_tile.updateHighlight(2);
+                                tile.updateHighlight(3);
                             }
                         }
-                        else//不能种
-                        {
-                            tile.updateHighlight(3);
-                        }
+                            
                     }
-                        
+                    break;
                 }
             }
-        }
 
         if (SideBar != null)
         {
             var sidebar = SideBar.GetComponent<Sidebar>();
             if (sidebar != null)
             {
-                if (sidebar.GetCurrentPlantId() != currentPlantId + 1)//注意这里加一！
+                if (sidebar.GetCurrentPlantId() != CurrentPlantIndex + 1)//注意这里加一！
                 {
                     SwitchPlant(sidebar.GetCurrentPlantId()-1);
                 }

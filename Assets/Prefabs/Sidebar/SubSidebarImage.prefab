@@ -147,3 +147,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 0
+  plant: {fileID: 0}
+  sidebar: {fileID: 0}

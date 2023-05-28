@@ -55,6 +55,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   imagePrefab: {fileID: 433421356208218586, guid: 8fadd6fc95783864f8854a62567c0201,
     type: 3}
+  images: []
+  currentPlantId: 0
 --- !u!222 &2643224548155010140
 CanvasRenderer:
   m_ObjectHideFlags: 0

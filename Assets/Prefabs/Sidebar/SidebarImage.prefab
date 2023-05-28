@@ -94,7 +94,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 0
   subSidebar: {fileID: 7332081172510879082}
-  text: {fileID: 0}
   parent: {fileID: 0}
 --- !u!114 &-6983127505208564466
 MonoBehaviour:

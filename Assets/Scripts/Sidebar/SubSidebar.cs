@@ -21,7 +21,7 @@ public class SubSidebar : MonoBehaviour
 
         SubSidebarImage img = imgObj.GetComponent<SubSidebarImage>();
         img.id = id;
-        img.image.GetComponent<Image>().color = new Color32(0, 0, (byte)(id * 30 + 40), 100); // TODO: set the image
+        // img.image.GetComponent<Image>().color = new Color32(0, 0, (byte)(id * 30 + 40), 100); // TODO: set the image
 
         var TypeName = new string[] { "Flora1", "Flora2", "Flora3", "Flora4", "Flora5", "Flora6", "Flora7" };
         img.text.GetComponent<TMP_Text>().text = TypeName[id-1];

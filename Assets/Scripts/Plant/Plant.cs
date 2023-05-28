@@ -26,6 +26,13 @@ public class Plant : MonoBehaviour
 
     public int rotateCnt = 0;
 
+    private void Awake()
+    {
+        GetComponent<MeshRenderer>().enabled = false;
+        if (GetComponent<CapsuleCollider>() != null)
+            GetComponent<CapsuleCollider>().enabled = false;
+    }
+
     // Start is called before the first frame update
     void Start()
     {

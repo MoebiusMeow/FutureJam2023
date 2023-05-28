@@ -23,7 +23,6 @@ public class HexTile : MonoBehaviour
 
     [Header("数据")]
     public bool unlocked = true;
-    public int fertility = 0;
     public float fertility = 0;
     public int coordQ = 0;
     public int coordR = 0;
@@ -62,9 +61,10 @@ public class HexTile : MonoBehaviour
     public List<MeshRenderer> stoneRenderer = new();
     public HexTilemap tilemap;
 
-    [Header("植物")]
+    [Header("植物数据结构")]
     public GameObject Plant = null;
 
+    [Header("判环用，别动")]
     static public int search_count = 0;
     public int search_tag = 0;
     public int goingToDie = 0; // 在删除植物时用于标记植物是否将要死去,0无需删除，1待计算删除影响，2已计算删除影响
@@ -102,7 +102,7 @@ public class HexTile : MonoBehaviour
     public bool CanPlant(Plant plant, int rotationIndex)
     {
         if (Plant != null) return false;
-        return CheckPlantCanGrow(plant, rotationIndex); ;
+        return CheckPlantCanGrow(plant, rotationIndex);
     }
 
     public void ClearAll()
@@ -267,6 +267,37 @@ public class HexTile : MonoBehaviour
         }
 
         foreach (var renderer in stoneRenderer)
+        {
+            float value = renderer.material.GetFloat("_Value");
+            if (unlocked)
+                renderer.material.SetFloat("_Value", math.clamp(value, 0, 1) - Time.deltaTime * 0.4f);
+            else
+                renderer.material.SetFloat("_Value", math.clamp(value, 0, 1) + Time.deltaTime * 0.8f);
+        }
+
+        fertilityDisplay.SetActive(tilemap.CurrentPlant != null);
+        fertilityDisplay.GetComponent<TextMeshPro>().SetText(string.Format("{0:d}", (int)(fertility + detFertility + tempFertility)));
+        var textmesh = increaseDisplay.GetComponent<TextMeshPro>();
+        if (tempFertility != 0)
+        {
+            if (tempFertility > 0)
+            {
+                textmesh.color = Color.green;
+                textmesh.SetText(string.Format("(+{0:d})", (int)tempFertility));
+            }
+            else
+            {
+                textmesh.color = Color.red;
+                textmesh.SetText(string.Format("({0:d})", (int)tempFertility));
+            }
+            textmesh.enabled = true;
+        }
+        else
+        {
+            textmesh.enabled = false;
+        }
+    }
+
     public void updateHighlight(int value)
     {
         if (highlightFrame != null)
@@ -297,40 +328,5 @@ public class HexTile : MonoBehaviour
                 }
             }
         }
-    }
-
-
-
-    void Update()
-    {
-        if (innerRenderer != null)
-        {
-            float value = renderer.material.GetFloat("_Value");
-            if (unlocked)
-                renderer.material.SetFloat("_Value", math.clamp(value, 0, 1) - Time.deltaTime * 0.4f);
-            else
-                renderer.material.SetFloat("_Value", math.clamp(value, 0, 1) + Time.deltaTime * 0.8f);
-        }
-        fertilityDisplay.GetComponent<TextMeshPro>().SetText(string.Format("{0:d}", (int)(fertility + detFertility + tempFertility)));
-        var textmesh = increaseDisplay.GetComponent<TextMeshPro>();
-        if (tempFertility != 0)
-        {
-            if (tempFertility > 0)
-            {
-                textmesh.color= Color.green;
-                textmesh.SetText(string.Format("(+{0:d})", (int)tempFertility));
-            }
-            else
-            {
-                textmesh.color= Color.red;
-                textmesh.SetText(string.Format("({0:d})", (int)tempFertility));
-            }
-            textmesh.enabled = true;
-        }
-        else
-        {
-            textmesh.enabled = false;
-        }
-        
     }
 }

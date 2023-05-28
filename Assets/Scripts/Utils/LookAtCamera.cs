@@ -13,10 +13,8 @@ public class LookAtCamera : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        var cameraDirection = transform.InverseTransformDirection(Camera.main.transform.forward);
-        Debug.Log(cameraDirection);
-        cameraDirection.z = 0;
-        var angle = Vector3.Angle(Vector3.up, cameraDirection.normalized);
-        transform.Rotate(new Vector3(0, 0 ,-angle));
+        var cameraDirection = transform.parent.InverseTransformDirection(Camera.main.transform.forward).normalized;
+        cameraDirection.y = 0;
+        transform.localRotation = Quaternion.LookRotation(cameraDirection, Vector3.up);
     }
 }

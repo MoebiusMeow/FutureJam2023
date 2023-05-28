@@ -49,3 +49,6 @@ MonoBehaviour:
   AutoFillTile: 1
   TilePrefab: {fileID: 8955158015288694576, guid: 40c6dc18c760e184db07808c673645fd,
     type: 3}
+  PlantPrefab:
+  - {fileID: 6043135760445661288, guid: 3372d928306ab7242add260a2d03b04a, type: 3}
+  - {fileID: 6043135760445661288, guid: 9bd2fd1e661e5a944ae19e9d72c8f0da, type: 3}

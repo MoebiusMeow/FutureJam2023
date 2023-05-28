@@ -24,7 +24,7 @@ public class HexTilemap : MonoBehaviour
 
     [Header("当前选择的要种植的植物")]
     public List<GameObject> PlantPrefab = new List<GameObject>();
-    private GameObject CurrentPlant = null;
+    public GameObject CurrentPlant = null;
     private int CurrentPlantIndex = -1;
 
     private int rotateCnt = 0;
@@ -274,7 +274,7 @@ public class HexTilemap : MonoBehaviour
             Destroy(CurrentPlant);
             CurrentPlant = null;
         }
-        if(plantIndex >=0 &&plantIndex < PlantPrefab.Count())
+        if (plantIndex >=0 && plantIndex < PlantPrefab.Count())
         {
             CurrentPlant = Instantiate(PlantPrefab[plantIndex], transform);
             CurrentPlant.transform.Translate(transform.position + new Vector3(10000, 10000, 1000));
@@ -336,6 +336,7 @@ public class HexTilemap : MonoBehaviour
                     tile.RemoveAllModels();
                 }
             }
+        /*
         // 测试升高
         if (Input.GetKey(KeyCode.U))
             foreach (var hit in Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition)))
@@ -347,6 +348,7 @@ public class HexTilemap : MonoBehaviour
                     tile.fertility += 1;
                 }
             }
+        */
 
         if (Input.GetKeyDown(KeyCode.Q)){ // rotate plant
             AddRotate(-1);

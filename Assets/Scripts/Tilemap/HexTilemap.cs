@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Xsl;
 using Unity.Mathematics;
-using Unity.VisualScripting.Antlr3.Runtime;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.Tilemaps;
@@ -24,7 +24,7 @@ public class HexTilemap : MonoBehaviour
 
     [Header("当前选择的要种植的植物")]
     public List<GameObject> PlantPrefab = new List<GameObject>();
-    private GameObject CurrentPlant = null;
+    public GameObject CurrentPlant = null;
     private int CurrentPlantIndex = -1;
 
     private int rotateCnt = 0;
@@ -36,6 +36,12 @@ public class HexTilemap : MonoBehaviour
     static public Vector3 CoordToPosition(int q, int r, float cellSize) => (q * UnitQ + r * UnitR - (q + r) * UnitS) * cellSize;
     static public int CoordDistance(int q1, int r1, int q2 = 0, int r2 = 0) => (math.abs(q1 - q2) + math.abs(q1 + r1 - q2 - r2) + math.abs(r1 - r2)) / 2;
     public Vector3 CoordToPosition(int q, int r) => CoordToPosition(q, r, CellSize);
+
+    private List<string> PlantPrefabNames = new List<string>();
+    private string PlantPrefabName = null;
+    private int currentPlantId = 0; // -2 delete -1 none >=0 plantindex
+
+    public GameObject SideBar = null;
 
     static public (int,int) RotateCoord(int q, int r) => (-r, q + r);
     static public (int,int) RotateCoord(int q, int r, int cnt)
@@ -54,7 +60,7 @@ public class HexTilemap : MonoBehaviour
     {
         if (!tiles.ContainsKey((q, r))) return null;
         var tile = tiles[(q, r)].GetComponent<HexTile>();
-        if (tile == null || tile.destroying) return null;
+        if (tile == null || tile.GetComponent<DissolveAndDestroy>() != null) return null;
         return tile;
     }
 
@@ -247,8 +253,8 @@ public class HexTilemap : MonoBehaviour
     void DoAutoFillTile()
     {
         tiles.Keys.Where((x) => CoordDistance(x.Item1, x.Item2) > MapSize).ToList().ForEach((x) => {
-            tiles[x].GetComponent<HexTile>().destroying = true;
-            Destroy(tiles[x].gameObject, 3);
+            var tile = tiles[x].GetComponent<HexTile>();
+            tile.RemoveAllModels();
             tiles.Remove(x);
         });
         for (int q = -MapSize; q <= MapSize; q++)
@@ -274,24 +280,101 @@ public class HexTilemap : MonoBehaviour
             Destroy(CurrentPlant);
             CurrentPlant = null;
         }
-        if(plantIndex >=0 &&plantIndex < PlantPrefab.Count())
+        if (plantIndex < 0)
+        {
+            return;
+        }
+        if (plantIndex >=0 && plantIndex < PlantPrefab.Count() && PlantPrefab[plantIndex]!=null)
         {
             CurrentPlant = Instantiate(PlantPrefab[plantIndex], transform);
             CurrentPlant.transform.Translate(transform.position + new Vector3(10000, 10000, 1000));
             CurrentPlantIndex = plantIndex;
+            PlantPrefabName = PlantPrefabNames[plantIndex];
+            Debug.LogFormat("PlantPrefabName:{0:s}", PlantPrefabName);
             //Debug.LogFormat("Current Plant:{0:d}", plantIndex);
         }
     }
 
     void Start()
     {
+        PlantPrefabNames.Add("A_01");
+        PlantPrefabNames.Add("A_02");
+        PlantPrefabNames.Add("A_03");
+        PlantPrefabNames.Add("A_04");
+        PlantPrefabNames.Add("A_05");
+        PlantPrefabNames.Add("B_01");
+        PlantPrefabNames.Add("B_02");
+        PlantPrefabNames.Add("B_03");
+        PlantPrefabNames.Add("C_01");
+        PlantPrefabNames.Add("C_02");
+        PlantPrefabNames.Add("C_03");
+
         SwitchPlant(-1);
     }
 
     void Update()
     {
-        if (AutoFillTile && !Input.GetMouseButton(0))
+        if (AutoFillTile && !Input.GetKey(KeyCode.D))
             DoAutoFillTile();
+        /*
+        foreach (var hit in Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition)))
+        {
+            var target = hit.collider.gameObject;
+            if (target.GetComponent<HexTile>() != null)
+            {
+                var tile = target.GetComponent<HexTile>();
+                if (tile.GetComponent<DissolveAndDestroy>() != null)
+                    continue;
+                // 测试添加植物
+                if (Input.GetMouseButton(0))
+                    tile.SetPlantType("C_01");
+                if (Input.GetKey(KeyCode.Alpha1)) tile.SetPlantType("A_01");
+                if (Input.GetKey(KeyCode.Alpha2)) tile.SetPlantType("A_02");
+                if (Input.GetKey(KeyCode.Alpha3)) tile.SetPlantType("A_03");
+                if (Input.GetKey(KeyCode.Alpha4)) tile.SetPlantType("A_04");
+                if (Input.GetKey(KeyCode.Alpha5)) tile.SetPlantType("");
+                if (Input.GetKey(KeyCode.Alpha6)) tile.SetPlantType("B_01");
+                if (Input.GetKey(KeyCode.Alpha7)) tile.SetPlantType("B_02");
+                if (Input.GetKey(KeyCode.Alpha8)) tile.SetPlantType("B_03");
+                if (Input.GetKey(KeyCode.Alpha9)) tile.SetPlantType("C_01");
+                if (Input.GetKey(KeyCode.Alpha0)) tile.SetPlantType("C_02");
+                if (Input.GetKey(KeyCode.Minus)) tile.SetPlantType("C_03");
+                if (Input.GetKey(KeyCode.Equals)) tile.SetPlantType("C_04");
+                // 测试删除植物
+                if (Input.GetMouseButton(1))
+                    tile.SetPlantType("");
+            }
+        }
+        
+        // 测试删除
+        if (Input.GetKey(KeyCode.D))
+            foreach (var hit in Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition)))
+            {
+                var target = hit.collider.gameObject;
+                if (target.GetComponent<HexTile>() != null)
+                {
+                    var tile = target.GetComponent<HexTile>();
+                    if (tile.GetComponent<DissolveAndDestroy>() != null)
+                        continue;
+                    if (tiles.ContainsKey((tile.coordQ, tile.coordR)))
+                        tiles.Remove((tile.coordQ, tile.coordR));
+                    tile.RemoveAllModels();
+                }
+            }
+        */
+        /*
+        // 测试升高
+        if (Input.GetKey(KeyCode.U))
+            foreach (var hit in Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition)))
+            {
+                var target = hit.collider.gameObject;
+                if (target.GetComponent<HexTile>() != null)
+                {
+                    var tile = target.GetComponent<HexTile>();
+                    tile.fertility += 1;
+                }
+            }
+        */
 
         if (Input.GetKeyDown(KeyCode.Q)){ // rotate plant
             AddRotate(-1);
@@ -322,9 +405,9 @@ public class HexTilemap : MonoBehaviour
                 var tile = target.GetComponent<HexTile>();
                 int q, r;
                 (q, r) = (tile.coordQ, tile.coordR);
-                Debug.Log((q, r));
+                // Debug.Log((q, r));
 
-                if (Input.GetKey(KeyCode.R))// 铲除植物
+                if (currentPlantId == -2)// 铲除植物
                 {
                     ClearAllTempValue();
                     if (Input.GetMouseButtonDown(0)) // 确定铲除
@@ -370,7 +453,7 @@ public class HexTilemap : MonoBehaviour
                     { 
                         if (fg)//种植植物
                         {
-                            tile.AddPlantToTile(Instantiate(PlantPrefab[CurrentPlantIndex], tile.transform), rotateCnt);
+                            tile.AddPlantToTile(Instantiate(PlantPrefab[CurrentPlantIndex], tile.transform), rotateCnt, PlantPrefabName);
                             ApplyAllTempFertility();
                         }
                     }
@@ -380,6 +463,13 @@ public class HexTilemap : MonoBehaviour
                         { //高亮加成格子
                             int x, y;
                             HexTile t_tile;
+                            foreach (var token in plant.fertilityAcquire)
+                            {
+                                (x, y) = RotateCoord(token.x, token.y, rotateCnt);
+                                (x, y) = (q + x, r + y);
+                                t_tile = GetTile(x, y);
+                                if (t_tile) t_tile.updateHighlight(5);
+                            }
                             foreach (var token in plant.fertilityEffect)
                             {
                                 (x, y) = RotateCoord(token.x, token.y, rotateCnt);
@@ -409,21 +499,21 @@ public class HexTilemap : MonoBehaviour
                     }
                         
                 }
-
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        if (SideBar != null)
         {
-            SwitchPlant(0);
-            //Debug.Log("swicth 0");
+            var sidebar = SideBar.GetComponent<Sidebar>();
+            if (sidebar != null)
+            {
+                if (sidebar.GetCurrentPlantId() != currentPlantId + 1)//注意这里加一！
+                {
+                    SwitchPlant(sidebar.GetCurrentPlantId()-1);
+                }
+            }
         }
-
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            SwitchPlant(1);
-            //Debug.Log("swicth 1");
-        }
+        
     }
 
 

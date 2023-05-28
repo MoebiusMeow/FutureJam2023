@@ -101,6 +101,11 @@
     <Compile Include="Assets\Scripts\Sidebar\SubSidebarImage.cs" />
     <Compile Include="Assets\Scripts\Sidebar\SidebarImage.cs" />
     <Compile Include="Assets\Scripts\Utils\CameraFocus.cs" />
+    <Compile Include="Assets\Scripts\Utils\FruitPhysics.cs" />
+    <Compile Include="Assets\Scripts\CountdownAndDestroy.cs" />
+    <Compile Include="Assets\Scripts\DissolveAndFadein.cs" />
+    <Compile Include="Assets\Scripts\DissolveAndDestroy.cs" />
+    <Compile Include="Assets\Scripts\Sidebar\Infobar.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
@@ -842,6 +847,9 @@
     </Reference>
     <Reference Include="Unity.VisualScripting.State">
       <HintPath>Library\ScriptAssemblies\Unity.VisualScripting.State.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.2D.Sprite.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.2D.Sprite.Editor.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

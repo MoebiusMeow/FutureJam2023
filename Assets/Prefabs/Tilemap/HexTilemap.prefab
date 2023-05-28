@@ -45,7 +45,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MapSize: 8
-  CellSize: 1.18
+  CellSize: 1
   AutoFillTile: 1
   TilePrefab: {fileID: 8955158015288694576, guid: 40c6dc18c760e184db07808c673645fd,
     type: 3}
+  PlantPrefab:
+  - {fileID: 6043135760445661288, guid: f19f9db03f85bf643b263d5543eea032, type: 3}
+  - {fileID: 6043135760445661288, guid: adb2e5fee7bd3f147ae3325fe5c49b36, type: 3}
+  - {fileID: 6043135760445661288, guid: 69a5a345781a42143b75f1380acb7ed2, type: 3}
+  - {fileID: 6043135760445661288, guid: 3f2ac8c8a0513634faec907f79c04253, type: 3}
+  - {fileID: 6043135760445661288, guid: ac105422ef7816747bb53aa7b247147d, type: 3}
+  - {fileID: 6043135760445661288, guid: ad7c70026189e6b4181f692b72acc37e, type: 3}
+  - {fileID: 6043135760445661288, guid: bf9e0ecb0de2f194d976c6293fef4b7c, type: 3}
+  - {fileID: 6043135760445661288, guid: 1451868783cc1e249b36ce75dd9776da, type: 3}
+  - {fileID: 6043135760445661288, guid: df26750652325d14db27f34162bbb98d, type: 3}
+  - {fileID: 6043135760445661288, guid: c7f0844b0d3c56547a90e67ed0da7f1c, type: 3}
+  - {fileID: 6043135760445661288, guid: 69677848087a4304d9e1c8aca56b1d75, type: 3}
+  CurrentPlant: {fileID: 0}

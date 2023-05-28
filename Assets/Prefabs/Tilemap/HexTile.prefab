@@ -469,7 +469,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: +3
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: cadea0e88e0706248b2765f882932bb9, type: 2}
   m_sharedMaterial: {fileID: -4176237403835351341, guid: cadea0e88e0706248b2765f882932bb9,
@@ -642,7 +642,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 768
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: cadea0e88e0706248b2765f882932bb9, type: 2}
   m_sharedMaterial: {fileID: -4176237403835351341, guid: cadea0e88e0706248b2765f882932bb9,
@@ -961,7 +961,7 @@ MonoBehaviour:
   coordQ: 0
   coordR: 0
   plantType: 
-  heightPerFertility: 0.1
+  heightPerFertility: 0.001
   container: {fileID: 3406840321569914346}
   soil: {fileID: 191606699370307754}
   sparkling: {fileID: 1033616804357932200}
@@ -987,6 +987,8 @@ MonoBehaviour:
   innerRenderer: []
   stoneRenderer:
   - {fileID: 626665602942620293}
+  soilRenderer:
+  - {fileID: 8977211314884257254}
   tilemap: {fileID: 0}
   Plant: {fileID: 0}
   search_tag: 0
@@ -1319,6 +1321,12 @@ PrefabInstance:
 --- !u!4 &7844807639393689225 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 6f3fbe0caeea8c04c9d9f83d10db06d7,
+    type: 3}
+  m_PrefabInstance: {fileID: 7734056605371185506}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &8977211314884257254 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: 6f3fbe0caeea8c04c9d9f83d10db06d7,
     type: 3}
   m_PrefabInstance: {fileID: 7734056605371185506}
   m_PrefabAsset: {fileID: 0}

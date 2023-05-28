@@ -30,7 +30,7 @@ public class HexTile : MonoBehaviour
     private string plantedType = "";
 
     [Header("显示")]
-    public float heightPerFertility = 0.01f;
+    public float heightPerFertility = 0.001f;
     public GameObject container;
     public GameObject soil;
     public GameObject sparkling;
@@ -41,6 +41,8 @@ public class HexTile : MonoBehaviour
 
     public float detFertility = 0; // 植物造成的肥力影响
     public float tempFertility = 0;// 预览种植效果时的临时影响
+    public float TotalFertility => fertility + detFertility;
+    public float VisualFertility => fertility + detFertility + tempFertility;
     
     [Header("数值显示")]
     public GameObject fertilityDisplay = null;
@@ -60,6 +62,7 @@ public class HexTile : MonoBehaviour
     public List<AudioSource> SoundEffects = new();
     public List<MeshRenderer> innerRenderer = new();
     public List<MeshRenderer> stoneRenderer = new();
+    public List<MeshRenderer> soilRenderer = new();
     public HexTilemap tilemap;
 
     [Header("植物数据结构")]
@@ -94,8 +97,8 @@ public class HexTile : MonoBehaviour
             int x, y;
             (x, y) = HexTilemap.RotateCoord(acquire.x, acquire.y, rotationIndex);
             int newq = coordQ + x, newr = coordR + y;
-            var tile_acquire = tilemap.tiles[(newq, newr)].GetComponent<HexTile>();
-            if (tile_acquire.GetAllFertility() < acquire.z) return false;
+            var tile_acquire = tilemap.GetTile(newq, newr);
+            if (tile_acquire == null || tile_acquire.GetAllFertility() < acquire.z) return false;
         }
         return true;
     }
@@ -235,10 +238,11 @@ public class HexTile : MonoBehaviour
             }
         }
 
+        float fertilityHeight = math.clamp(0.0f, 0.5f, VisualFertility * heightPerFertility);
         if (container != null)
-            container.transform.localPosition = fertility * heightPerFertility * Vector3.up;
+            container.transform.localPosition = Vector3.Lerp(container.transform.localPosition, fertilityHeight * Vector3.up, 0.1f);
         if (soil != null)
-            soil.transform.localPosition = fertility * heightPerFertility * Vector3.up;
+            soil.transform.localPosition = Vector3.Lerp(soil.transform.localPosition, fertilityHeight * Vector3.up, 0.1f);
 
         foreach (var renderer in innerRenderer)
         {
@@ -256,6 +260,13 @@ public class HexTile : MonoBehaviour
                 renderer.material.SetFloat("_Value", math.clamp(value, 0, 1) - Time.deltaTime * 0.4f);
             else
                 renderer.material.SetFloat("_Value", math.clamp(value, 0, 1) + Time.deltaTime * 0.8f);
+        }
+
+        foreach (var renderer in soilRenderer)
+        {
+            float value = renderer.material.GetFloat("_feili");
+            value = math.lerp(value, math.clamp(math.unlerp(40, 0, fertility + detFertility + tempFertility), 0, 1), 0.1f);
+            renderer.material.SetFloat("_feili", value);
         }
 
         fertilityDisplay.SetActive(tilemap.CurrentPlant != null);

@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using TMPro;
+using System.Linq;
 
 /*
  Sidebar.prefab 是一个底边栏，提供交互功能，并维护当前选中的植物。
@@ -150,6 +151,7 @@ public class Sidebar : MonoBehaviour
         AddPlant(3, 9);
         AddPlant(3, 10);
         AddPlant(3, 11);
+        Enumerable.Range(0, 11).ToList().ForEach(i => SetSeedNumber(i, 99));
     }
     public void DebugSetCurrentPlantIdTo233()
     {

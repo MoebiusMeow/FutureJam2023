@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6043135760445661270}
   - component: {fileID: 6043135760445661289}
   m_Layer: 0
-  m_Name: A1
+  m_Name: B2 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -112,9 +112,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fertilityAcquire:
-  - {x: 0, y: 0, z: 0}
-  fertilityEffect:
+  - {x: 0, y: 0, z: 1}
   - {x: 1, y: 0, z: 1}
+  - {x: 1, y: -1, z: 2}
+  - {x: 0, y: 1, z: 2}
+  fertilityEffect: []
   useX: 0
   XPos: {x: 0, y: 0}
   fertilityXEffect: []

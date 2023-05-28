@@ -52,6 +52,7 @@ public class HexTile : MonoBehaviour
     public Color hightlightColorXPos = Color.blue;
     public Color hightlightColorDie = Color.red;
     public Color hightlightColorWarning = Color.yellow;
+    public Color hightlightAcquire= Color.white;
     public Color endcolor = Color.green;
     public GameObject highlightFrame = null;
 
@@ -113,6 +114,7 @@ public class HexTile : MonoBehaviour
     public void SetPlantType(string plant)
     {
         plantType = plant;
+        Debug.LogFormat("SetPlantType:{0:s}", plant);
     }
 
     public void RemovePlantModel()
@@ -158,32 +160,12 @@ public class HexTile : MonoBehaviour
         goingToDie = 0;
     }
 
-    public bool isEmpty()
-    {
-        return Plant== null;
-    }
-
-    public void UpdateFertility()
-    {
-        var plant = Plant.GetComponent<Plant>();
-        foreach (var effect in plant.fertilityEffect)
-        {
-            int x, y;
-            (x, y) = HexTilemap.RotateCoord(effect.x, effect.y, plant.rotateCnt);
-            int newq = coordQ + x, newr = coordR + y;
-            var tile_fertilize = tilemap.GetTile(newq, newr);
-            if (tile_fertilize != null)
-            {
-                tile_fertilize.detFertility += effect.z;
-            }
-        }
-    }
-
-    public void AddPlantToTile(GameObject newPlant, int rotationIndex)
+    public void AddPlantToTile(GameObject newPlant, int rotationIndex, string plant_name)
     {
         Plant = newPlant;
         var plant = Plant.GetComponent<Plant>();
         plant.rotateCnt = rotationIndex;
+        SetPlantType(plant_name);
     }
 
     public void RemovePlant()
@@ -193,6 +175,7 @@ public class HexTile : MonoBehaviour
         //Debug.Log("Destorying Plant");
         Destroy(Plant);
         Plant = null;
+        SetPlantType("");
     }
 
     void Start()
@@ -325,6 +308,11 @@ public class HexTile : MonoBehaviour
                 {
                     linerenderer.startColor = hightlightColorWarning;
                     linerenderer.endColor = hightlightColorWarning;
+                }
+                if (highlight == 5)
+                {
+                    linerenderer.startColor = hightlightAcquire;
+                    linerenderer.endColor = hightlightAcquire;
                 }
             }
         }

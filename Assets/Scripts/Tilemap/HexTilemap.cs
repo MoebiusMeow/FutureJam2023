@@ -37,6 +37,9 @@ public class HexTilemap : MonoBehaviour
     static public int CoordDistance(int q1, int r1, int q2 = 0, int r2 = 0) => (math.abs(q1 - q2) + math.abs(q1 + r1 - q2 - r2) + math.abs(r1 - r2)) / 2;
     public Vector3 CoordToPosition(int q, int r) => CoordToPosition(q, r, CellSize);
 
+    private List<string> PlantPrefabNames = new List<string>();
+    private string PlantPrefabName = null;
+
     static public (int,int) RotateCoord(int q, int r) => (-r, q + r);
     static public (int,int) RotateCoord(int q, int r, int cnt)
     {
@@ -274,17 +277,31 @@ public class HexTilemap : MonoBehaviour
             Destroy(CurrentPlant);
             CurrentPlant = null;
         }
-        if (plantIndex >=0 && plantIndex < PlantPrefab.Count())
+        if (plantIndex >=0 && plantIndex < PlantPrefab.Count() && PlantPrefab[plantIndex]!=null)
         {
             CurrentPlant = Instantiate(PlantPrefab[plantIndex], transform);
             CurrentPlant.transform.Translate(transform.position + new Vector3(10000, 10000, 1000));
             CurrentPlantIndex = plantIndex;
+            PlantPrefabName = PlantPrefabNames[plantIndex];
+            Debug.LogFormat("PlantPrefabName:{0:s}", PlantPrefabName);
             //Debug.LogFormat("Current Plant:{0:d}", plantIndex);
         }
     }
 
     void Start()
     {
+        PlantPrefabNames.Add("A_01");
+        PlantPrefabNames.Add("A_02");
+        PlantPrefabNames.Add("A_03");
+        PlantPrefabNames.Add("A_04");
+        PlantPrefabNames.Add("A_05");
+        PlantPrefabNames.Add("B_01");
+        PlantPrefabNames.Add("B_02");
+        PlantPrefabNames.Add("B_03");
+        PlantPrefabNames.Add("C_01");
+        PlantPrefabNames.Add("C_02");
+        PlantPrefabNames.Add("C_03");
+
         SwitchPlant(-1);
     }
 
@@ -292,6 +309,7 @@ public class HexTilemap : MonoBehaviour
     {
         if (AutoFillTile && !Input.GetKey(KeyCode.D))
             DoAutoFillTile();
+        /*
         foreach (var hit in Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition)))
         {
             var target = hit.collider.gameObject;
@@ -320,7 +338,7 @@ public class HexTilemap : MonoBehaviour
                     tile.SetPlantType("");
             }
         }
-
+        
         // 测试删除
         if (Input.GetKey(KeyCode.D))
             foreach (var hit in Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition)))
@@ -336,6 +354,7 @@ public class HexTilemap : MonoBehaviour
                     tile.RemoveAllModels();
                 }
             }
+        */
         /*
         // 测试升高
         if (Input.GetKey(KeyCode.U))
@@ -379,7 +398,7 @@ public class HexTilemap : MonoBehaviour
                 var tile = target.GetComponent<HexTile>();
                 int q, r;
                 (q, r) = (tile.coordQ, tile.coordR);
-                Debug.Log((q, r));
+                // Debug.Log((q, r));
 
                 if (Input.GetKey(KeyCode.R))// 铲除植物
                 {
@@ -427,7 +446,7 @@ public class HexTilemap : MonoBehaviour
                     { 
                         if (fg)//种植植物
                         {
-                            tile.AddPlantToTile(Instantiate(PlantPrefab[CurrentPlantIndex], tile.transform), rotateCnt);
+                            tile.AddPlantToTile(Instantiate(PlantPrefab[CurrentPlantIndex], tile.transform), rotateCnt, PlantPrefabName);
                             ApplyAllTempFertility();
                         }
                     }
@@ -437,6 +456,13 @@ public class HexTilemap : MonoBehaviour
                         { //高亮加成格子
                             int x, y;
                             HexTile t_tile;
+                            foreach (var token in plant.fertilityAcquire)
+                            {
+                                (x, y) = RotateCoord(token.x, token.y, rotateCnt);
+                                (x, y) = (q + x, r + y);
+                                t_tile = GetTile(x, y);
+                                if (t_tile) t_tile.updateHighlight(5);
+                            }
                             foreach (var token in plant.fertilityEffect)
                             {
                                 (x, y) = RotateCoord(token.x, token.y, rotateCnt);

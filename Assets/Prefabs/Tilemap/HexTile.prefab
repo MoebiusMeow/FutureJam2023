@@ -978,7 +978,8 @@ MonoBehaviour:
   hightlightColorXPos: {r: 0, g: 0, b: 1, a: 1}
   hightlightColorDie: {r: 1, g: 0, b: 0, a: 1}
   hightlightColorWarning: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  endcolor: {r: 0, g: 1, b: 0, a: 1}
+  hightlightAcquire: {r: 1, g: 1, b: 1, a: 1}
+  endcolor: {r: 0, g: 1, b: 0.7554712, a: 1}
   highlightFrame: {fileID: 8357618119201816357}
   SoundEffects:
   - {fileID: 840852972617489525}

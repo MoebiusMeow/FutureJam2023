@@ -55,6 +55,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   imagePrefab: {fileID: 433421356208218586, guid: 8fadd6fc95783864f8854a62567c0201,
     type: 3}
+  hintbar: {fileID: 0}
+  hintbarPrefab: {fileID: 2218944877177944124, guid: ce58e07f66042034fad1759132035354,
+    type: 3}
   closeSprites:
   - {fileID: 21300000, guid: 24a4b83ec8ec86d4bb5cb1edde5600d7, type: 3}
   - {fileID: 21300000, guid: 28a7991855833af43a5aedf7da085bfe, type: 3}
@@ -70,6 +73,30 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 2958e7fa76c8bdc4ca3c0b5148be4865, type: 3}
   - {fileID: 21300000, guid: 5482e03d4d036b24f9f3eb958af28ead, type: 3}
   - {fileID: 21300000, guid: 3d6079662997a1e4e9f6cb2cab37e0ba, type: 3}
+  seedSprites:
+  - {fileID: 21300000, guid: 886c17589d8510544b1866f62f34952c, type: 3}
+  - {fileID: 21300000, guid: 2f57a2381ab00c84faa123f710782587, type: 3}
+  - {fileID: 21300000, guid: 34439c7f665e7e34c80c5f44d7073b2b, type: 3}
+  - {fileID: 21300000, guid: 713ad1d727ce0e2439d16146a456c8a5, type: 3}
+  - {fileID: 21300000, guid: 65461cd4bb80588409519ef064fa8425, type: 3}
+  - {fileID: 21300000, guid: 831efaa166e85f748ac9435717e203dc, type: 3}
+  - {fileID: 21300000, guid: 9d475929bc0c5174f8035d187e2c7447, type: 3}
+  - {fileID: 21300000, guid: 7ebe1d97312aa9b49bba265891ca4009, type: 3}
+  - {fileID: 21300000, guid: 827440e9f6557dd49a4b682754cc7b92, type: 3}
+  - {fileID: 21300000, guid: 14c7a5080dbf97142b6ffa66d368a4d9, type: 3}
+  - {fileID: 21300000, guid: 194ea6b48ae49794c8f12699785489a4, type: 3}
+  hintbarSprites:
+  - {fileID: 21300000, guid: da14fe322949eb94e8baa8a3278f0520, type: 3}
+  - {fileID: 21300000, guid: bf2bab13a108bef488e02dc36a67ee3b, type: 3}
+  - {fileID: 21300000, guid: 752ea511a2ebd964dbf84e6f0b1d0033, type: 3}
+  - {fileID: 21300000, guid: da14fe322949eb94e8baa8a3278f0520, type: 3}
+  - {fileID: 21300000, guid: da14fe322949eb94e8baa8a3278f0520, type: 3}
+  - {fileID: 21300000, guid: a98b4ad14e25e3749b55933af9928bee, type: 3}
+  - {fileID: 21300000, guid: da14fe322949eb94e8baa8a3278f0520, type: 3}
+  - {fileID: 21300000, guid: da14fe322949eb94e8baa8a3278f0520, type: 3}
+  - {fileID: 21300000, guid: da14fe322949eb94e8baa8a3278f0520, type: 3}
+  - {fileID: 21300000, guid: da14fe322949eb94e8baa8a3278f0520, type: 3}
+  - {fileID: 21300000, guid: da14fe322949eb94e8baa8a3278f0520, type: 3}
   images: []
   currentPlantId: 0
 --- !u!222 &2643224548155010140
@@ -127,7 +154,7 @@ MonoBehaviour:
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 7
+  m_ChildAlignment: 8
   m_Spacing: -2
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 0

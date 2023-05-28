@@ -32,13 +32,19 @@ using TMPro;
 public class Sidebar : MonoBehaviour
 {
     public GameObject imagePrefab;
+    public Sprite[] closeSprites;
+    public Sprite[] openSprites;
+    public Sprite[] tags;
     public List<GameObject> images = new List<GameObject>();
     public int currentPlantId;
 
     void Start()
     {
+        AddPlantType(1);
+        AddPlantType(2);
+        AddPlantType(3);
         AddPlantType(-1);
-        AddPlantType(0);
+        images[3].GetComponent<SidebarImage>().image.GetComponent<Button>().interactable = true;
     }
 
     // interface starts
@@ -47,12 +53,13 @@ public class Sidebar : MonoBehaviour
         int idx;
         for(idx=0; idx<images.Count; ++idx)
         {
-            if (images[idx].GetComponent<SidebarImage>().type == type)
+            SidebarImage img = images[idx].GetComponent<SidebarImage>();
+            if (img.type == type)
+            {
+                img.typeTag.GetComponent<Image>().sprite = tags[type];
+                img.image.GetComponent<Button>().interactable = true;
                 break;
-        }
-        if(idx==images.Count)
-        {
-            AddPlantType(type);
+            }
         }
         images[idx].GetComponent<SidebarImage>().subSidebar.GetComponent<SubSidebar>().AddPlantId(this, id);
     }
@@ -71,15 +78,15 @@ public class Sidebar : MonoBehaviour
     {
         foreach(GameObject img in images)
         {
-            img.GetComponent<SidebarImage>().subSidebar.SetActive(false);
+            img.GetComponent<SidebarImage>().OnClose();
         }
     }
 
     public void SetSeedNumber(int id, int number)
     {
-        foreach(GameObject img in images)
+        for(int idx=0;idx<3;++idx)
         {
-            foreach(GameObject subImg in img.GetComponent<SidebarImage>().subSidebar.GetComponent<SubSidebar>().images)
+            foreach(GameObject subImg in images[idx].GetComponent<SidebarImage>().subSidebar.GetComponent<SubSidebar>().images)
             {
                 SubSidebarImage im = subImg.GetComponent<SubSidebarImage>();
                 if(im.id==id)
@@ -105,24 +112,29 @@ public class Sidebar : MonoBehaviour
         GameObject imgObj = Instantiate(imagePrefab);
         imgObj.transform.SetParent(transform);
 
-
-        if(type>0)imgObj.transform.SetSiblingIndex(imgObj.transform.GetSiblingIndex() - 2);
         SidebarImage img = imgObj.GetComponent<SidebarImage>();
-        img.InitSidebar();
         img.type = type;
-        img.image.GetComponent<Image>().color = new Color32((byte)(type * 30 + 150), 0, 0, 100); // TODO: set the image
-
-        var TypeName = new string[] { "Shovel", "Cancel", "Fat", "Flower", "Fruit" };
-        img.text.GetComponent<TMP_Text>().text = TypeName[type+1];
+        img.InitSidebar();
+        if(type>0)
+            img.image.GetComponent<Image>().sprite = closeSprites[type];
+        else if(type==-1)
+            img.image.GetComponent<Image>().sprite = closeSprites[0];
 
         img.parent = this;
         images.Add(imgObj);
+    }
+
+    void ActivatePlantType(int type)
+    {
+
     }
 
     // following: debug use only
     public void DebugAddPlant37()
     {
         AddPlant(3, 7);
+        AddPlant(1, 3);
+        AddPlant(2, 5);
     }
     public void DebugSetCurrentPlantIdTo233()
     {

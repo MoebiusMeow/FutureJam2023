@@ -55,6 +55,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   imagePrefab: {fileID: 433421356208218586, guid: 8fadd6fc95783864f8854a62567c0201,
     type: 3}
+  closeSprites:
+  - {fileID: 21300000, guid: 24a4b83ec8ec86d4bb5cb1edde5600d7, type: 3}
+  - {fileID: 21300000, guid: 28a7991855833af43a5aedf7da085bfe, type: 3}
+  - {fileID: 21300000, guid: 20d5ed18649d9b443bd6274f65c87603, type: 3}
+  - {fileID: 21300000, guid: 8ea170110563d1b4696c026c3cfcfd8f, type: 3}
+  openSprites:
+  - {fileID: 21300000, guid: 2fbb8d48c55857a49870c581179b9ddf, type: 3}
+  - {fileID: 21300000, guid: 28eac005809813f4492fe87c0b1ee3fe, type: 3}
+  - {fileID: 21300000, guid: 73e574b1b6d34294187315b8d1d8d953, type: 3}
+  - {fileID: 21300000, guid: 8af04878f6418534ab6b3b7104807b3f, type: 3}
+  tags:
+  - {fileID: 21300000, guid: b1d838a1b41c8454a8134c01efd68e98, type: 3}
+  - {fileID: 21300000, guid: 2958e7fa76c8bdc4ca3c0b5148be4865, type: 3}
+  - {fileID: 21300000, guid: 5482e03d4d036b24f9f3eb958af28ead, type: 3}
+  - {fileID: 21300000, guid: 3d6079662997a1e4e9f6cb2cab37e0ba, type: 3}
   images: []
   currentPlantId: 0
 --- !u!222 &2643224548155010140
@@ -78,15 +93,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: b1d838a1b41c8454a8134c01efd68e98, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -108,12 +123,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 10
-    m_Right: 10
-    m_Top: 10
-    m_Bottom: 10
-  m_ChildAlignment: 4
-  m_Spacing: 10
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 7
+  m_Spacing: -2
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 0

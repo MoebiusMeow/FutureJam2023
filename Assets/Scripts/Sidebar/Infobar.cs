@@ -16,6 +16,10 @@ using TMPro;
  * 
  * public int GetSpeed();
  * 获取当前运行速度
+ * 
+ * public void SetSpeed();
+ * 设置当前运行速度
+ * 
  */
 
 public class Infobar : MonoBehaviour
@@ -53,6 +57,11 @@ public class Infobar : MonoBehaviour
     public int GetSpeed()
     {
         return spd;
+    }
+
+    public void SetSpeed(int s)
+    {
+        spd = s;
     }
     // interface ends
 

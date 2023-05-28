@@ -6,8 +6,9 @@ using UnityEngine.EventSystems;
 
 public class SidebarImage : MonoBehaviour
 {
-    public int id;
-    Vector3 rotationEuler;
+    public int type;
+    public GameObject subSidebar;
+    public Sidebar parent;
 
     void Start()
     {
@@ -22,6 +23,16 @@ public class SidebarImage : MonoBehaviour
 
     public void OnClick()
     {
+        List<GameObject> objs = parent.images;
+        foreach(GameObject obj in objs)
+        {
+            obj.GetComponent<SidebarImage>().subSidebar.SetActive(false);
+        }
+        if (type > 0)
+            subSidebar.SetActive(true);
+        else
+            parent.currentPlantId = type;
+
         Debug.Log("Sidebar Click.");
     }
 }

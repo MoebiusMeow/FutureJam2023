@@ -7,7 +7,8 @@ using UnityEngine.EventSystems;
 public class SubSidebarImage : MonoBehaviour
 {
     public int id;
-    Vector3 rotationEuler;
+    public GameObject plant;
+    public Sidebar sidebar;
 
     void Start()
     {
@@ -22,7 +23,7 @@ public class SubSidebarImage : MonoBehaviour
 
     public void OnClick()
     {
-        Debug.Log("SubImage click.");
-        id += 1;
+        sidebar.currentPlantId = id;
+        Debug.Log($"SubImage click id {id}");
     }
 }

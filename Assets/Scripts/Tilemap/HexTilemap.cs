@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Mathematics;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class HexTilemap : MonoBehaviour
@@ -33,7 +34,7 @@ public class HexTilemap : MonoBehaviour
     {
         if (!tiles.ContainsKey((q, r))) return null;
         var tile = tiles[(q, r)].GetComponent<HexTile>();
-        if (tile == null || tile.destroying) return null;
+        if (tile == null || tile.GetComponent<DissolveAndDestroy>() != null) return null;
         return tile;
     }
 
@@ -69,8 +70,8 @@ public class HexTilemap : MonoBehaviour
     void DoAutoFillTile()
     {
         tiles.Keys.Where((x) => CoordDistance(x.Item1, x.Item2) > MapSize).ToList().ForEach((x) => {
-            tiles[x].GetComponent<HexTile>().destroying = true;
-            Destroy(tiles[x].gameObject, 3);
+            var tile = tiles[x].GetComponent<HexTile>();
+            tile.RemoveAllModels();
             tiles.Remove(x);
         });
         for (int q = -MapSize; q <= MapSize; q++)
@@ -95,22 +96,61 @@ public class HexTilemap : MonoBehaviour
 
     void Update()
     {
-        if (AutoFillTile && !Input.GetMouseButton(0))
+        if (AutoFillTile && !Input.GetKey(KeyCode.D))
             DoAutoFillTile();
-        if (Input.GetMouseButton(0))
-        if (Input.GetMouseButton(0))
+        foreach (var hit in Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition)))
+        {
+            var target = hit.collider.gameObject;
+            if (target.GetComponent<HexTile>() != null)
+            {
+                var tile = target.GetComponent<HexTile>();
+                if (tile.GetComponent<DissolveAndDestroy>() != null)
+                    continue;
+                // ≤‚ ‘ÃÌº”÷≤ŒÔ
+                if (Input.GetMouseButton(0))
+                    tile.SetPlantType("C_01");
+                if (Input.GetKey(KeyCode.Alpha1)) tile.SetPlantType("A_01");
+                if (Input.GetKey(KeyCode.Alpha2)) tile.SetPlantType("A_02");
+                if (Input.GetKey(KeyCode.Alpha3)) tile.SetPlantType("A_03");
+                if (Input.GetKey(KeyCode.Alpha4)) tile.SetPlantType("A_04");
+                if (Input.GetKey(KeyCode.Alpha5)) tile.SetPlantType("");
+                if (Input.GetKey(KeyCode.Alpha6)) tile.SetPlantType("B_01");
+                if (Input.GetKey(KeyCode.Alpha7)) tile.SetPlantType("B_02");
+                if (Input.GetKey(KeyCode.Alpha8)) tile.SetPlantType("B_03");
+                if (Input.GetKey(KeyCode.Alpha9)) tile.SetPlantType("C_01");
+                if (Input.GetKey(KeyCode.Alpha0)) tile.SetPlantType("C_02");
+                if (Input.GetKey(KeyCode.Minus)) tile.SetPlantType("C_03");
+                if (Input.GetKey(KeyCode.Equals)) tile.SetPlantType("C_04");
+                // ≤‚ ‘…æ≥˝÷≤ŒÔ
+                if (Input.GetMouseButton(1))
+                    tile.SetPlantType("");
+            }
+        }
+
+        // ≤‚ ‘…æ≥˝
+        if (Input.GetKey(KeyCode.D))
             foreach (var hit in Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition)))
             {
                 var target = hit.collider.gameObject;
                 if (target.GetComponent<HexTile>() != null)
                 {
                     var tile = target.GetComponent<HexTile>();
-                    if (tile.destroying)
+                    if (tile.GetComponent<DissolveAndDestroy>() != null)
                         continue;
                     if (tiles.ContainsKey((tile.coordQ, tile.coordR)))
                         tiles.Remove((tile.coordQ, tile.coordR));
-                    tile.destroying = true;
-                    Destroy(target, 3);
+                    tile.RemoveAllModels();
+                }
+            }
+        // ≤‚ ‘…˝∏ﬂ
+        if (Input.GetKey(KeyCode.U))
+            foreach (var hit in Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition)))
+            {
+                var target = hit.collider.gameObject;
+                if (target.GetComponent<HexTile>() != null)
+                {
+                    var tile = target.GetComponent<HexTile>();
+                    tile.fertility += 1;
                 }
             }
     }

@@ -59,6 +59,9 @@
     <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
     <Compile Include="Assets\Scripts\Tilemap\HexTilemap.cs" />
     <Compile Include="Assets\Scripts\Tilemap\HexTile.cs" />
+    <Compile Include="Assets\Scripts\DissolveAndDestroy.cs" />
+    <Compile Include="Assets\Scripts\DissolveAndFadein.cs" />
+    <Compile Include="Assets\Scripts\CountdownAndDestroy.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

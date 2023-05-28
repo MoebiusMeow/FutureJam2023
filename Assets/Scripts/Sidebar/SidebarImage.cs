@@ -7,18 +7,28 @@ using UnityEngine.EventSystems;
 public class SidebarImage : MonoBehaviour
 {
     public int type;
+    public GameObject subSidebarPrefab;
     public GameObject subSidebar;
+    public GameObject image;
+    public GameObject text;
     public Sidebar parent;
+
+    public void InitSidebar()
+    {
+        subSidebar = Instantiate(subSidebarPrefab);
+        subSidebar.SetActive(false);
+        subSidebar.transform.SetParent(transform.parent.parent);
+    }
 
     void Start()
     {
-
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        subSidebar.transform.position = transform.localPosition + transform.parent.position + Vector3.up * 80;
     }
 
     public void OnClick()

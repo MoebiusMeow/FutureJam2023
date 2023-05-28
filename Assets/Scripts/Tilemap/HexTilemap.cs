@@ -324,7 +324,7 @@ public class HexTilemap : MonoBehaviour
                         ApplyAllTempFertility();
                         ApplyAllKillPlant();
                     }
-                    else
+                    else //预览铲除
                     {
                         RemovePlant(q, r);
                         while (TagAllDeadPlant())
@@ -342,9 +342,10 @@ public class HexTilemap : MonoBehaviour
                         {
                             var k_tile = Tile.GetComponent<HexTile>();
                             if (k_tile.goingToDie > 0)
-                                k_tile.updateHighlight(3);
+                                k_tile.updateHighlight(4);// 警告受牵连的植物
                             k_tile.goingToDie = 0;
                         }
+                        tile.updateHighlight(3); //标记删除植物位置
                     }
                 }
                 else if (CurrentPlant != null && CurrentPlantIndex >= 0 &&CurrentPlantIndex < PlantPrefab.Count())

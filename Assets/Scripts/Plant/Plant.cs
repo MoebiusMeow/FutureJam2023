@@ -20,16 +20,39 @@ public class Plant : MonoBehaviour
     public float tickToBearFruit = 0;
     public float tickgrown = 0;
 
+    [Header("¿ÝÎ®")]
+    public float maxheath = 10;
+    public float health = 10;
+
     public int rotateCnt = 0;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        RestoreHealth();
     }
 
-    public void grow() { 
-        
+    public bool Grow(int val = 1)
+    {// return true if bear fruit
+        if (tickgrown < tickToBearFruit)
+            tickgrown += val;
+        return tickgrown >= tickToBearFruit;
+    }
+
+    public bool LooseHelth(int val =1) // return true if die
+    {
+        health -= val;
+        if(health <= 0)
+        {
+            health = 0;
+            return true;
+        }
+        return false;
+    }
+
+    public void RestoreHealth()
+    {
+        health = maxheath;
     }
 
     // Update is called once per frame

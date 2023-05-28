@@ -22,9 +22,10 @@ public class HexTile : MonoBehaviour
 
     [Header("¸ßÁÁ¿ò")]
     public int highlight = 0;
-    public Color hightlightColor1 = Color.green;
-    public Color hightlightColor2 = Color.blue;
-    public Color hightlightColor3 = Color.red;
+    public Color hightlightColorFertilizer = Color.green;
+    public Color hightlightColorXPos = Color.blue;
+    public Color hightlightColorDie = Color.red;
+    public Color hightlightColorWarning = Color.yellow;
     public Color endcolor = Color.green;
     public GameObject highlightFrame = null;
 
@@ -173,17 +174,22 @@ public class HexTile : MonoBehaviour
                 linerenderer.enabled = highlight > 0;
                 if (highlight == 1)
                 {
-                    linerenderer.startColor = hightlightColor1;
+                    linerenderer.startColor = hightlightColorFertilizer;
                     linerenderer.endColor = endcolor;
                 }
                 if (highlight == 2) {
-                    linerenderer.startColor = hightlightColor2;
+                    linerenderer.startColor = hightlightColorXPos;
                     linerenderer.endColor = endcolor;
                 }
                 if (highlight == 3)
                 {
-                    linerenderer.startColor = hightlightColor3;
-                    linerenderer.endColor   = hightlightColor3;
+                    linerenderer.startColor = hightlightColorDie;
+                    linerenderer.endColor   = hightlightColorDie;
+                }
+                if (highlight == 4)
+                {
+                    linerenderer.startColor = hightlightColorWarning;
+                    linerenderer.endColor = hightlightColorWarning;
                 }
             }
         }

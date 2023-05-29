@@ -416,7 +416,7 @@ public class HexTilemap : MonoBehaviour
                     int q, r;
                     (q, r) = (tile.coordQ, tile.coordR);
                     // Debug.Log((q, r));
-                    Debug.Log($"{CurrentPlantIndex}");
+                    // Debug.Log($"{CurrentPlantIndex}");
                     if (CurrentPlantIndex == -2)// ²ù³ýÖ²Îï
                     {
                         ClearAllTempValue();

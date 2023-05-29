@@ -27,7 +27,20 @@ public class SubSidebar : MonoBehaviour
         // img.image.GetComponent<Image>().color = new Color32(0, 0, (byte)(id * 30 + 40), 100); // TODO: set the image
 
         // var TypeName = new string[] { "Flora1", "Flora2", "Flora3", "Flora4", "Flora5", "Flora6", "Flora7" };
-        var TypeName = Enumerable.Range(0, 5 + 3 + 3).Select((x) => string.Format("Flora{0}", x)).ToArray();
+        var TypeName = new string[]
+        {
+            "·Ê·Ê¶¹",
+            "ÈıÏà²İ",
+            "ÎÖÍÁÀ¼",
+            "µØÉúÁÛ",
+            "ºìÖíÁı",
+            "ÁúÕÆ¡¤¦Á",
+            "ÁúÕÆ¡¤¦Â",
+            "ÁúÕÆ¡¤¦Ã",
+            "ç²Á«",
+            "ÇæÓğ",
+            "¨~¨~"
+        };
         img.text.GetComponent<TMP_Text>().text = TypeName[id - 1];
 
         img.sidebar = sidebar;

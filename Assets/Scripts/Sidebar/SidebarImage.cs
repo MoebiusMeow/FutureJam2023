@@ -45,6 +45,7 @@ public class SidebarImage : MonoBehaviour
         }
         else
         {
+            parent.currentPlantId = 0;
             image.GetComponent<Image>().sprite = parent.closeSprites[0];
         }
     }

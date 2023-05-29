@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class DissolveAndFadein : MonoBehaviour
 {
-    public float fadeinSpeed = 1.8f;
+    public float fadeinSpeed = 0.8f;
     public List<MeshRenderer> meshRenderers = new List<MeshRenderer>();
 
     public void RestartFadein()

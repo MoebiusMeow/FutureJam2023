@@ -43,6 +43,8 @@ public class Sidebar : MonoBehaviour
     public List<GameObject> images = new List<GameObject>();
     public int currentPlantId;
 
+    private Dictionary<int, int> plantSeedNumbers = new Dictionary<int, int>();
+
     void Start()
     {
         hintbar = Instantiate(hintbarPrefab);
@@ -76,6 +78,7 @@ public class Sidebar : MonoBehaviour
             }
         }
         images[idx].GetComponent<SidebarImage>().subSidebar.GetComponent<SubSidebar>().AddPlantId(this, id);
+        plantSeedNumbers[id] = 0;
     }
     
     public int GetCurrentPlantId()
@@ -96,9 +99,15 @@ public class Sidebar : MonoBehaviour
         }
     }
 
+    public int GetSeedNumber(int id)
+    {
+        return plantSeedNumbers[(int)id];
+    }
+
     public void SetSeedNumber(int id, int number)
     {
-        for(int idx=0;idx<3;++idx)
+        plantSeedNumbers[id] = number;
+        for (int idx=0;idx<3;++idx)
         {
             foreach(GameObject subImg in images[idx].GetComponent<SidebarImage>().subSidebar.GetComponent<SubSidebar>().images)
             {

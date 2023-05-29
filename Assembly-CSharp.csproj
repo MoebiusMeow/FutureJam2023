@@ -112,6 +112,8 @@
     <Compile Include="Assets\Scripts\Sidebar\Log.cs" />
     <Compile Include="Assets\Scripts\Sidebar\Event.cs" />
     <Compile Include="Assets\Audios\AudioComposite.cs" />
+    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
+    <Compile Include="Assets\Scripts\Plant\Seed.cs" />
     <Compile Include="Assets\Scripts\EventChecker.cs" />
   </ItemGroup>
   <ItemGroup>

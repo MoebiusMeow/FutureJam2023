@@ -465,6 +465,8 @@ public class HexTilemap : MonoBehaviour
                             {
                                 tile.AddPlantToTile(Instantiate(PlantPrefab[CurrentPlantIndex], tile.transform), rotateCnt, PlantPrefabName);
                                 ApplyAllTempFertility();
+                                var sidebar = SideBar.GetComponent<Sidebar>();
+                                sidebar.SetSeedNumber(CurrentPlantIndex + 1, sidebar.GetSeedNumber(CurrentPlantIndex + 1)-1);
                             }
                         }
                         else
@@ -535,6 +537,15 @@ public class HexTilemap : MonoBehaviour
                 if (plant != null && !tile.CheckPlantCanGrow(plant, plant.rotateCnt))
                 {
                     plant.LooseHelth(Time.deltaTime); // 减少枯萎植物的生命值
+                }
+                if (plant.TimeToBearFruit > 0)
+                {
+                    if(plant.Grow(Time.deltaTime))// 植物生长
+                    {
+                        plant.timeGrown = 0;
+                        var seed = plant.GenerateSeed();
+                        seed.GetComponent<Seed>().SetSideBar(SideBar);
+                    }
                 }
             }
         }

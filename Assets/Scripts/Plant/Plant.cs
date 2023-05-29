@@ -27,6 +27,8 @@ public class Plant : MonoBehaviour
 
     public int rotateCnt = 0;
 
+    public GameObject SeedPrefab = null;
+
     private void Awake()
     {
         GetComponent<MeshRenderer>().enabled = false;
@@ -45,6 +47,18 @@ public class Plant : MonoBehaviour
         if (timeGrown < TimeToBearFruit)
             timeGrown += val;
         return timeGrown >= TimeToBearFruit;
+    }
+
+    public GameObject GenerateSeed()
+    {
+        if (SeedPrefab != null)
+        {
+            Debug.Log("Seed!");
+            var seed = Instantiate(SeedPrefab, transform);
+            seed.transform.position = transform.position + new Vector3(0.5f, 1.0f, 0.5f);
+            return seed;
+        }
+        return null;
     }
 
     public bool LooseHelth(float val =1) // return true if die

@@ -119,8 +119,10 @@ MonoBehaviour:
   useX: 0
   XPos: {x: 0, y: 0}
   fertilityXEffect: []
-  TimeToBearFruit: 0
+  TimeToBearFruit: 3
   timeGrown: 0
   maxheath: 20
   health: 20
   rotateCnt: 0
+  SeedPrefab: {fileID: 7907673064300651175, guid: 5a88843f290746743966effa3734701b,
+    type: 3}

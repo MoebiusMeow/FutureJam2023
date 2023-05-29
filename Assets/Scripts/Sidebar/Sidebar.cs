@@ -119,6 +119,31 @@ public class Sidebar : MonoBehaviour
         }
     }
 
+    public void AddSeedNumber(int id, int number)
+    {
+        for(int idx=0;idx<3;++idx)
+        {
+            foreach(GameObject subImg in images[idx].GetComponent<SidebarImage>().subSidebar.GetComponent<SubSidebar>().images)
+            {
+                SubSidebarImage im = subImg.GetComponent<SubSidebarImage>();
+                if(im.id==id)
+                {
+                    int value = int.Parse(im.number.GetComponent<TMP_Text>().text);
+                    number = Mathf.Max(0, value + number);
+                    im.number.GetComponent<TMP_Text>().text = $"{number}";
+                    if(number==0)
+                    {
+                        im.image.GetComponent<Button>().interactable = false;
+                    }
+                    else
+                    {
+                        im.image.GetComponent<Button>().interactable = true;
+                    }
+                }
+            }
+        }
+    }
+
     // interface ends
 
     void AddPlantType(int type)

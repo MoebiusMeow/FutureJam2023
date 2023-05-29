@@ -21,7 +21,7 @@ using TMPro;
  * 设置当前运行速度
  * 
  * public void SetPause(bool pause);
- * 设置当前运行速度
+ * 设置当前是否暂停
  * 
  */
 

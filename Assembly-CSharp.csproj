@@ -107,6 +107,11 @@
     <Compile Include="Assets\Scripts\Utils\FruitPhysics.cs" />
     <Compile Include="Assets\Scripts\Sidebar\Infobar.cs" />
     <Compile Include="Assets\Scripts\RandomHexDir.cs" />
+    <Compile Include="Assets\Scripts\Sidebar\UI.cs" />
+    <Compile Include="Assets\Scripts\Controller.cs" />
+    <Compile Include="Assets\Scripts\Sidebar\Log.cs" />
+    <Compile Include="Assets\Scripts\Sidebar\Event.cs" />
+    <Compile Include="Assets\Audios\AudioComposite.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

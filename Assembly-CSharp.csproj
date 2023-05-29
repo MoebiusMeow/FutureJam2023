@@ -106,6 +106,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\SimpleScript.cs" />
     <Compile Include="Assets\Scripts\Utils\FruitPhysics.cs" />
     <Compile Include="Assets\Scripts\Sidebar\Infobar.cs" />
+    <Compile Include="Assets\Scripts\RandomHexDir.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

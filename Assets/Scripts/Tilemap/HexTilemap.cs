@@ -9,6 +9,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.Tilemaps;
 using UnityEngine.UIElements;
+using Random = UnityEngine.Random;
 
 public class HexTilemap : MonoBehaviour
 {
@@ -27,6 +28,7 @@ public class HexTilemap : MonoBehaviour
     public List<GameObject> PlantPrefab = new List<GameObject>();
     public GameObject CurrentPlant = null;
     private int CurrentPlantIndex = -1; // -2 delete -1 none >=0 plantindex
+    public bool NeedDisplayFertility => CurrentPlantIndex != -1;
 
     private int rotateCnt = 0;
 
@@ -124,6 +126,7 @@ public class HexTilemap : MonoBehaviour
             int newq = q + x, newr = r + y;
             if (!RecursiveUpdateFertility(newq, newr, normaltoken.z, 0))
             {
+                GetTile(newq, newr).requiredFertility = -1;
                 ClearAllTempValue();
                 return false;
             }
@@ -261,7 +264,12 @@ public class HexTilemap : MonoBehaviour
             for (int r = -math.min(0, q) - MapSize; r <= -math.max(0, q) + MapSize; r++)
             {
                 if (!tiles.ContainsKey((q, r)))
+                {
                     tiles[(q, r)] = Instantiate(TilePrefab, transform);
+                    tiles[(q, r)].GetComponent<HexTile>().unlocked =
+                        CoordDistance(q, r) <= 5 ? true :
+                        (Random.value >= CoordDistance(q, r) * 0.1f);
+                }
                 var tileObject = tiles[(q, r)];
                 tileObject.transform.localPosition = CoordToPosition(q, r);
                 if (tileObject.GetComponent<HexTile>() != null)
@@ -401,9 +409,9 @@ public class HexTilemap : MonoBehaviour
             foreach (var hit in Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition)))
             {
                 var target = hit.collider.gameObject;
-                if (target.GetComponent<HexTile>() != null)
+                if (target.GetComponentInParent<HexTile>() != null)
                 {
-                    var tile = target.GetComponent<HexTile>();
+                    var tile = target.GetComponentInParent<HexTile>();
                     int q, r;
                     (q, r) = (tile.coordQ, tile.coordR);
                     // Debug.Log((q, r));
@@ -460,7 +468,7 @@ public class HexTilemap : MonoBehaviour
                         }
                         else
                         { //预览种植相关
-                            if (fg)
+                            if (fg || true)
                             { //高亮加成格子
                                 int x, y;
                                 HexTile t_tile;
@@ -469,6 +477,7 @@ public class HexTilemap : MonoBehaviour
                                     (x, y) = RotateCoord(token.x, token.y, rotateCnt);
                                     (x, y) = (q + x, r + y);
                                     t_tile = GetTile(x, y);
+                                    if (t_tile) t_tile.requiredFertility = token.z;
                                     if (t_tile) t_tile.updateHighlight(5);
                                 }
                                 foreach (var token in plant.fertilityEffect)
@@ -493,12 +502,12 @@ public class HexTilemap : MonoBehaviour
                                     if (t_tile) t_tile.updateHighlight(2);
                                 }
                             }
-                            else//不能种
+                            if (tile.Plant != null || !tile.unlocked) //不能种
                             {
                                 tile.updateHighlight(3);
                             }
                         }
-                            
+
                     }
                     break;
                 }

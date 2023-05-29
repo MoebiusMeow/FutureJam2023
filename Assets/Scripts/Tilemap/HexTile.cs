@@ -41,6 +41,7 @@ public class HexTile : MonoBehaviour
 
     public float detFertility = 0; // 植物造成的肥力影响
     public float tempFertility = 0;// 预览种植效果时的临时影响
+    public float requiredFertility = 0;// 预览种植效果时的提示不足
     public float TotalFertility => fertility + detFertility;
     public float VisualFertility => fertility + detFertility + tempFertility;
     
@@ -55,6 +56,7 @@ public class HexTile : MonoBehaviour
     public Color hightlightColorDie = Color.red;
     public Color hightlightColorWarning = Color.yellow;
     public Color hightlightAcquire= Color.white;
+    public Color hightlightOccupied= Color.green * 0.2f;
     public Color endcolor = Color.green;
     public GameObject highlightFrame = null;
 
@@ -98,7 +100,7 @@ public class HexTile : MonoBehaviour
             (x, y) = HexTilemap.RotateCoord(acquire.x, acquire.y, rotationIndex);
             int newq = coordQ + x, newr = coordR + y;
             var tile_acquire = tilemap.GetTile(newq, newr);
-            if (tile_acquire == null || tile_acquire.GetAllFertility() < acquire.z) return false;
+            if (tile_acquire == null || !tile_acquire.unlocked || tile_acquire.GetAllFertility() < acquire.z) return false;
         }
         return true;
     }
@@ -161,6 +163,7 @@ public class HexTile : MonoBehaviour
     {
         tempFertility = search_tag = 0;
         goingToDie = 0;
+        requiredFertility = 0;
     }
 
     public void AddPlantToTile(GameObject newPlant, int rotationIndex, string plant_name)
@@ -221,8 +224,8 @@ public class HexTile : MonoBehaviour
                 particle.transform.localScale = sparkling.transform.localScale;
                 particle.transform.localPosition = sparkling.transform.localPosition;
 
-                particle = Instantiate(smokeParticle, soil.transform);
-                particle.transform.localScale = container.transform.localScale;
+                // particle = Instantiate(smokeParticle, soil.transform);
+                // particle.transform.localScale = container.transform.localScale;
 
                 SoundEffects[0].Play();
 
@@ -243,6 +246,8 @@ public class HexTile : MonoBehaviour
             container.transform.localPosition = Vector3.Lerp(container.transform.localPosition, fertilityHeight * Vector3.up, 0.1f);
         if (soil != null)
             soil.transform.localPosition = Vector3.Lerp(soil.transform.localPosition, fertilityHeight * Vector3.up, 0.1f);
+        if (TotalFertility > 0)
+            unlocked = true;
 
         foreach (var renderer in innerRenderer)
         {
@@ -269,7 +274,7 @@ public class HexTile : MonoBehaviour
             renderer.material.SetFloat("_feili", value);
         }
 
-        fertilityDisplay.SetActive(tilemap.CurrentPlant != null);
+        fertilityDisplay.SetActive(tilemap.NeedDisplayFertility);
         fertilityDisplay.GetComponent<TextMeshPro>().SetText(string.Format("{0:d}", (int)(fertility + detFertility + tempFertility)));
         var textmesh = increaseDisplay.GetComponent<TextMeshPro>();
         if (tempFertility != 0)
@@ -284,6 +289,18 @@ public class HexTile : MonoBehaviour
                 textmesh.color = Color.red;
                 textmesh.SetText(string.Format("({0:d})", (int)tempFertility));
             }
+            textmesh.enabled = true;
+        }
+        else if (-1 == requiredFertility)
+        {
+            textmesh.color = Color.red;
+            textmesh.SetText("LOOP");
+            textmesh.enabled = true;
+        }
+        else if (TotalFertility < requiredFertility)
+        {
+            textmesh.color = Color.red;
+            textmesh.SetText(string.Format("/{0:d}", (int)requiredFertility));
             textmesh.enabled = true;
         }
         else
@@ -301,10 +318,17 @@ public class HexTile : MonoBehaviour
             if (linerenderer != null)
             {
                 linerenderer.enabled = highlight > 0;
+                if (highlight <= 0 && Plant != null && tilemap.NeedDisplayFertility)
+                {
+                    linerenderer.enabled = true;
+                    linerenderer.endColor = linerenderer.startColor = hightlightOccupied;
+                }
                 if (highlight == 1)
                 {
                     linerenderer.startColor = hightlightColorFertilizer;
                     linerenderer.endColor = endcolor;
+                    if (-1 == requiredFertility)
+                        linerenderer.endColor = linerenderer.startColor = Color.Lerp(hightlightAcquire, hightlightColorDie, Mathf.Cos(6 * Time.timeSinceLevelLoad) * 0.5f + 0.5f);
                 }
                 if (highlight == 2) {
                     linerenderer.startColor = hightlightColorXPos;
@@ -322,8 +346,9 @@ public class HexTile : MonoBehaviour
                 }
                 if (highlight == 5)
                 {
-                    linerenderer.startColor = hightlightAcquire;
-                    linerenderer.endColor = hightlightAcquire;
+                    linerenderer.endColor = linerenderer.startColor = hightlightAcquire;
+                    if (TotalFertility < requiredFertility)
+                        linerenderer.endColor = linerenderer.startColor = Color.Lerp(hightlightAcquire, hightlightColorDie, Mathf.Cos(6 * Time.timeSinceLevelLoad) * 0.5f + 0.5f);
                 }
             }
         }

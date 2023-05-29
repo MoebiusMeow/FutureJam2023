@@ -112,15 +112,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fertilityAcquire:
-  - {x: 0, y: 0, z: 1}
-  - {x: 1, y: 0, z: 1}
-  - {x: 1, y: -1, z: 2}
-  - {x: 0, y: 1, z: 2}
+  - {x: 1, y: 0, z: 3}
+  - {x: 0, y: -1, z: 3}
+  - {x: -1, y: 1, z: 3}
   fertilityEffect: []
   useX: 0
   XPos: {x: 0, y: 0}
   fertilityXEffect: []
-  TimeToBearFruit: 30
+  TimeToBearFruit: 10
   timeGrown: 0
   maxheath: 20
   health: 20

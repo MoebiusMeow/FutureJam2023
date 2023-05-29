@@ -544,15 +544,29 @@ public class HexTilemap : MonoBehaviour
                     {
                         plant.timeGrown = 0;
                         var seed = plant.GenerateSeed();
+                        Seed real_seed = null;
                         foreach (Transform child in seed.transform)
                         {
                             var c_seed = child.gameObject.GetComponent<Seed>();
                             if (c_seed != null)
+                            {
                                 c_seed.SetSideBar(SideBar);
+                                real_seed = c_seed;
+                            }
                         }
                         var _seed = seed.GetComponent<Seed>();
-                        if(_seed!=null)
+                        if (_seed != null)
+                        {
                             _seed.SetSideBar(SideBar);
+                            real_seed = _seed;
+                        }
+                        if (real_seed != null)
+                        {
+                            if(real_seed.plantId == 7)
+                            {
+                                real_seed.fruit_cnt = (int)tile.GetAllFertility() * 3;
+                            }
+                        }
                     }
                 }
             }

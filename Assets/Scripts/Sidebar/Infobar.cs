@@ -17,7 +17,10 @@ using TMPro;
  * public int GetSpeed();
  * 获取当前运行速度
  * 
- * public void SetSpeed();
+ * public void SetSpeed(int speed);
+ * 设置当前运行速度
+ * 
+ * public void SetPause(bool pause);
  * 设置当前运行速度
  * 
  */
@@ -25,7 +28,9 @@ using TMPro;
 public class Infobar : MonoBehaviour
 {
     public GameObject fruit, day, pause, run, fast;
-    int spd = 0;
+    public Sprite sprite1x, sprite2x;
+    int spd = 1;
+    bool isPause = true;
 
     void Start()
     {
@@ -37,10 +42,10 @@ public class Infobar : MonoBehaviour
     {
         pause.GetComponent<Button>().interactable = true;
         run.GetComponent<Button>().interactable = true;
-        fast.GetComponent<Button>().interactable = true;
-        if (spd == 0) pause.GetComponent<Button>().interactable = false;
-        if (spd == 1) run.GetComponent<Button>().interactable = false;
-        if (spd == 2) fast.GetComponent<Button>().interactable = false;
+        if (isPause) pause.GetComponent<Button>().interactable = false;
+        else run.GetComponent<Button>().interactable = false;
+        if (spd == 1) fast.GetComponent<Image>().sprite = sprite1x;
+        else fast.GetComponent<Image>().sprite = sprite2x;
     }
 
     // interface starts
@@ -56,16 +61,20 @@ public class Infobar : MonoBehaviour
 
     public int GetSpeed()
     {
+        if (isPause) return 0;
         return spd;
     }
-
-    public void SetSpeed(int s)
+    public void SetPause(bool pause)
     {
-        spd = s;
+        isPause = pause;
+    }
+    public void SetSpeed(int speed)
+    {
+        spd = speed;
     }
     // interface ends
 
-    public void OnPauseClick() { spd = 0; }
-    public void OnRunClick() { spd = 1; }
-    public void OnFastClick() { spd = 2; }
+    public void OnPauseClick() { isPause = true; }
+    public void OnRunClick() { isPause = false; }
+    public void OnFastClick() { spd = 3-spd; }
 }

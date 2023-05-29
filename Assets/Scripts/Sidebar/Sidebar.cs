@@ -33,20 +33,32 @@ using System.Linq;
 public class Sidebar : MonoBehaviour
 {
     public GameObject imagePrefab;
+    public GameObject hintbar;
+    public GameObject hintbarPrefab;
     public Sprite[] closeSprites;
     public Sprite[] openSprites;
     public Sprite[] tags;
+    public Sprite[] seedSprites;
+    public Sprite[] hintbarSprites;
     public List<GameObject> images = new List<GameObject>();
     public int currentPlantId;
 
     void Start()
     {
+        hintbar = Instantiate(hintbarPrefab);
+        hintbar.transform.SetParent(transform.parent);
+        hintbar.SetActive(false);
         AddPlantType(1);
         AddPlantType(2);
         AddPlantType(3);
         AddPlantType(-1);
         images[3].GetComponent<SidebarImage>().image.GetComponent<Button>().interactable = true;
         DebugAddPlantall();
+    }
+
+    void Update()
+    {
+
     }
 
     // interface starts

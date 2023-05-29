@@ -42,6 +42,7 @@ public class Sidebar : MonoBehaviour
     public Sprite[] hintbarSprites;
     public List<GameObject> images = new List<GameObject>();
     public int currentPlantId;
+    public int fruit_cnt = 0;
 
     private Dictionary<int, int> plantSeedNumbers = new Dictionary<int, int>();
 
@@ -107,6 +108,7 @@ public class Sidebar : MonoBehaviour
     public void SetSeedNumber(int id, int number)
     {
         plantSeedNumbers[id] = number;
+        Debug.Log((id, number));
         for (int idx=0;idx<3;++idx)
         {
             foreach(GameObject subImg in images[idx].GetComponent<SidebarImage>().subSidebar.GetComponent<SubSidebar>().images)

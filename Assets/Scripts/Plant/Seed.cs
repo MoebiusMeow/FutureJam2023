@@ -5,12 +5,13 @@ using UnityEngine;
 
 public class Seed : MonoBehaviour
 {
-    public string plantType;
     public int plantId;
     public GameObject SparkingEffect;
     public GameObject SmokingEffect;
 
     private int collecting = 0;
+    public int fruit_cnt = 0;
+    public int seed_cnt = 1;
     private Sidebar sidebar = null;
     
 
@@ -41,8 +42,12 @@ public class Seed : MonoBehaviour
             var mesh = GetComponent<MeshRenderer>();
             mesh.enabled = false;
             Destroy(gameObject, 3.0f);
-            if(sidebar)
-                sidebar.SetSeedNumber(plantId+1, sidebar.GetSeedNumber(plantId+1) + 1);
+            if (sidebar)
+            {
+                sidebar.SetSeedNumber(plantId + 1, sidebar.GetSeedNumber(plantId + 1) + seed_cnt);
+                sidebar.fruit_cnt += fruit_cnt;
+            }
+               
         }
     }
 }

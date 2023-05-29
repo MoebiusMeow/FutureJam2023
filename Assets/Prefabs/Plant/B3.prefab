@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6043135760445661270}
   - component: {fileID: 6043135760445661289}
   m_Layer: 0
-  m_Name: A3
+  m_Name: B3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -113,15 +113,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fertilityAcquire:
   - {x: 0, y: 0, z: 1}
-  fertilityEffect: []
-  useX: 1
-  XPos: {x: -1, y: 0}
-  fertilityXEffect:
   - {x: 1, y: 0, z: 1}
+  - {x: 1, y: -1, z: 2}
+  - {x: 0, y: 1, z: 2}
+  fertilityEffect: []
+  useX: 0
+  XPos: {x: 0, y: 0}
+  fertilityXEffect: []
   TimeToBearFruit: 30
   timeGrown: 0
-  maxheath: 2
-  health: 2
+  maxheath: 20
+  health: 20
   rotateCnt: 0
-  SeedPrefab: {fileID: 7907673064300651175, guid: 2fdfe7daadf3f0840b6afa923165b7d9,
+  SeedPrefab: {fileID: 7708356316441969113, guid: 7f0f9a0374a0a7a4d8f48e9b5c19d2e6,
     type: 3}

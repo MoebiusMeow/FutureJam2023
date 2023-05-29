@@ -118,7 +118,7 @@ MonoBehaviour:
   useX: 0
   XPos: {x: 0, y: 0}
   fertilityXEffect: []
-  TimeToBearFruit: 3
+  TimeToBearFruit: 10
   timeGrown: 0
   maxheath: 20
   health: 20

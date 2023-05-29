@@ -12,7 +12,8 @@ public class Seed : MonoBehaviour
     private int collecting = 0;
     public int fruit_cnt = 0;
     public int seed_cnt = 1;
-    private Sidebar sidebar = null;
+    public Sidebar sidebar = null;
+    public  Infobar infobar = null;
     
 
     // Start is called before the first frame update
@@ -25,6 +26,15 @@ public class Seed : MonoBehaviour
     public void SetSideBar(GameObject _sidebar)
     {
         sidebar = _sidebar.GetComponent<Sidebar>();
+    }
+
+    public void SetInfoBar(GameObject _infobar)
+    {
+        infobar = _infobar.GetComponent<Infobar>();
+        if(infobar == null)
+        {
+            Debug.Log("InfoBar is Null!!!!!!");
+        }
     }
 
     // Update is called once per frame
@@ -45,7 +55,7 @@ public class Seed : MonoBehaviour
             if (sidebar)
             {
                 sidebar.SetSeedNumber(plantId + 1, sidebar.GetSeedNumber(plantId + 1) + seed_cnt);
-                sidebar.fruit_cnt += fruit_cnt;
+                infobar.fruit_cnt += fruit_cnt;
             }
                
         }

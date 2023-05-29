@@ -108,7 +108,6 @@ public class Sidebar : MonoBehaviour
     public void SetSeedNumber(int id, int number)
     {
         plantSeedNumbers[id] = number;
-        Debug.Log((id, number));
         for (int idx=0;idx<3;++idx)
         {
             foreach(GameObject subImg in images[idx].GetComponent<SidebarImage>().subSidebar.GetComponent<SubSidebar>().images)
@@ -132,7 +131,8 @@ public class Sidebar : MonoBehaviour
 
     public void AddSeedNumber(int id, int number)
     {
-        for(int idx=0;idx<3;++idx)
+        plantSeedNumbers[id] += number;
+        for (int idx=0;idx<3;++idx)
         {
             foreach(GameObject subImg in images[idx].GetComponent<SidebarImage>().subSidebar.GetComponent<SubSidebar>().images)
             {

@@ -31,6 +31,7 @@ public class Infobar : MonoBehaviour
     public Sprite sprite1x, sprite2x;
     int spd = 1;
     bool isPause = true;
+    public int fruit_cnt = 0;
 
     void Start()
     {

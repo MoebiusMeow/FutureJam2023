@@ -44,6 +44,7 @@ public class HexTilemap : MonoBehaviour
     private string PlantPrefabName = null;
 
     public GameObject SideBar = null;
+    public GameObject InfoBar = null;
 
     static public (int,int) RotateCoord(int q, int r) => (-r, q + r);
     static public (int,int) RotateCoord(int q, int r, int cnt)
@@ -550,20 +551,25 @@ public class HexTilemap : MonoBehaviour
                             var c_seed = child.gameObject.GetComponent<Seed>();
                             if (c_seed != null)
                             {
-                                c_seed.SetSideBar(SideBar);
                                 real_seed = c_seed;
+                                c_seed.SetSideBar(SideBar);
+                                c_seed.SetInfoBar(InfoBar);
                             }
                         }
                         var _seed = seed.GetComponent<Seed>();
                         if (_seed != null)
                         {
-                            _seed.SetSideBar(SideBar);
                             real_seed = _seed;
+                            _seed.SetSideBar(SideBar);
+                            _seed.SetInfoBar(InfoBar);
                         }
+                            
                         if (real_seed != null)
                         {
                             if(real_seed.plantId == 7)
                             {
+                                real_seed.SetSideBar(SideBar);
+                                real_seed.SetInfoBar(InfoBar);
                                 real_seed.fruit_cnt = (int)tile.GetAllFertility() * 3;
                             }
                         }

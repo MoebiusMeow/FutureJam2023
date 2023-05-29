@@ -39,9 +39,9 @@ public class SubSidebarImage : MonoBehaviour
                 "根据相邻地块的肥力等级来增幅另外一个地块",
                 "根据相邻地块的肥力等级来增幅另外三个地块",
                 "根据相邻地块的肥力等级来增幅多个地块，至衰减为0",
-                "同时产出种子与果实\r\n效率尚可",
-                "同时产出种子与果实\r\n效率较高",
-                "中心占用地块的肥力等级越高，产种效率越高",
+                "能产出可供巨龙食用的果实\r\n效率尚可",
+                "能产出可供巨龙食用的果实\r\n效率较高",
+                "中心占用地块的肥力等级越高，结果效率越高",
                 "散发着芬芳气味的娇小花朵，能够吸引昆虫",
                 "舒展着美丽花瓣的奇异花朵，能够吸引鸟儿",
                 "传说中的巨大花朵，其名讳无法拼读，巨龙凭此与同族相互呼唤。但也可能引来别的什么……"
@@ -57,9 +57,9 @@ public class SubSidebarImage : MonoBehaviour
             "每10s产出1颗种子，1颗果实",
             "每30s产出3颗种子，30颗果实",
             "每30s产出3颗种子，3X颗果实",
-            "",
-            "",
-            ""
+            "不产种",
+            "不产种",
+            "不产种"
         };
         sidebar.hintbar.GetComponent<Hintbar>().motto.GetComponent<TMP_Text>().text = mottos[id - 1];
         sidebar.hintbar.SetActive(true);

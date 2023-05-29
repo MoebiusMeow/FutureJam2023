@@ -8,6 +8,7 @@ using TMPro;
 /*
  * 
  *  public void Popup(string title, string intro, string confirm);
+ *  public void ShowLog(string text);
  *  public bool EventAllClear(); // 返回是否所有事件已经确认
  *
  */
@@ -15,15 +16,14 @@ using TMPro;
 
 public class UI : MonoBehaviour
 {
-    public GameObject eventPrefab;
+    public GameObject eventPrefab, logPrefab;
     public GameObject infobar;
-    public int eventCount;
+    public GameObject logs;
+    public int eventCount, logCount;
 
     void Start()
     {
 
-        Popup("1", "1", "1");
-        Popup("2", "2", "2");
     }
 
     // Update is called once per frame
@@ -45,5 +45,14 @@ public class UI : MonoBehaviour
         ev.GetComponent<Event>().Popup(title, intro, confirm);
         infobar.GetComponent<Infobar>().SetSpeed(0);
         eventCount += 1;
+    }
+
+    public void ShowLog(string text)
+    {
+        GameObject lg = Instantiate(logPrefab);
+        lg.transform.SetParent(logs.transform);
+        lg.GetComponent<Log>().parent = this;
+        lg.GetComponent<Log>().Popup(text);
+        logCount += 1;
     }
 }

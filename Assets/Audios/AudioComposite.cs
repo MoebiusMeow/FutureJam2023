@@ -43,6 +43,7 @@ public class AudioComposite : MonoBehaviour
         bool useBasic = (math.unlerp(focusScript.minDiatance, focusScript.maxDistance, focusScript.distance) >= 0.1f);
         bool useFlute = (math.unlerp(focusScript.minDiatance, focusScript.maxDistance, focusScript.distance) >= 0.7f);
         bool useEnd = false;
+        useEnd = EventChecker.Instance.downedEventC3;
         AdjustVolume(end, !cutoff && useEnd);
         if (useEnd) cutoff = true;
 

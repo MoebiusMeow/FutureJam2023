@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class EventChecker : MonoBehaviour
 {
+    static public EventChecker Instance;
+
     public UI ui;
     public Sidebar sidebar;
     public HexTilemap tilemap;
@@ -12,7 +14,7 @@ public class EventChecker : MonoBehaviour
     bool downedEvent3 = false;
     bool downedEventC1 = false;
     bool downedEventC2 = false;
-    bool downedEventC3 = false;
+    public bool downedEventC3 = false;
     bool downedEventLoop = false;
     Dictionary<int, int> plantCount;
     public int days = 0;
@@ -20,6 +22,8 @@ public class EventChecker : MonoBehaviour
 
     void Start()
     {
+        Instance = this;
+        StartCoroutine(DailyCheck());
         StartCoroutine(Check());
     }
 
@@ -35,6 +39,11 @@ public class EventChecker : MonoBehaviour
         }
     }
 
+    int GetFruitCount()
+    {
+        return 999;
+    }
+
     IEnumerator DailyCheck()
     {
         while (true)
@@ -42,7 +51,26 @@ public class EventChecker : MonoBehaviour
             yield return new WaitForSeconds(120);
             days += 1;
             var X = Mathf.Floor(20 * Mathf.Log(3 * days - 1.5f));
-            // if (ui.infobar.GetComponent<Infobar>().ft)
+            if (GetFruitCount() >= X)
+            {
+                ui.Popup("一天结束了…", "旅行令龙饥饿，它需要果实。", string.Format("交付 {} 果实", X));
+                while (!ui.EventAllClear()) yield return new WaitForEndOfFrame();
+
+                if (Random.value <= 0.1)
+                {
+                    ui.Popup("一般通过小鸟", "咦？有什么东西从天而降。", "收下一包种子");
+                    while (!ui.EventAllClear()) yield return new WaitForEndOfFrame();
+                    for (int i = 1; i <= 11; i++)
+                        sidebar.AddSeedNumber(i, 10);
+                }
+            }
+            else
+            {
+                ui.Popup("果实不足", "饥肠辘辘的龙被迫暂停了它的旅途……", "返回标题页");
+                while (!ui.EventAllClear()) yield return new WaitForEndOfFrame();
+                Application.Quit();
+                yield break;
+            }
         }
     }
 
@@ -100,6 +128,13 @@ public class EventChecker : MonoBehaviour
                 ui.Popup("▇▇盛开…", "也许，连龙也没有想到▇▇能够再现于世。", "……");
                 while (!ui.EventAllClear()) yield return new WaitForEndOfFrame();
                 downedEventC3 = true;
+            }
+
+            if (!downedEventLoop && loopTriggered)
+            {
+                ui.Popup("…植物不是这样种的！", "幻想世界也要讲基本法。不可以把沃土兰这样的植物连成环哦！", "知道了");
+                while (!ui.EventAllClear()) yield return new WaitForEndOfFrame();
+                downedEventLoop = true;
             }
 
             yield return new WaitForEndOfFrame();

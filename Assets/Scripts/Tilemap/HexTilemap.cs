@@ -290,6 +290,7 @@ public class HexTilemap : MonoBehaviour
         }
         if (plantIndex < 0)
         {
+            CurrentPlantIndex = plantIndex;
             return;
         }
         if (plantIndex >= 0 && plantIndex < PlantPrefab.Count() && PlantPrefab[plantIndex] != null)
@@ -415,7 +416,7 @@ public class HexTilemap : MonoBehaviour
                     int q, r;
                     (q, r) = (tile.coordQ, tile.coordR);
                     // Debug.Log((q, r));
-
+                    Debug.Log($"{CurrentPlantIndex}");
                     if (CurrentPlantIndex == -2)// ²ù³ýÖ²Îï
                     {
                         ClearAllTempValue();

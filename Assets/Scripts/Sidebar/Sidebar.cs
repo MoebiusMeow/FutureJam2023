@@ -131,6 +131,22 @@ public class Sidebar : MonoBehaviour
 
     public void AddSeedNumber(int id, int number)
     {
+        var TypeName = new string[]
+        {
+            "·Ê·Ê¶¹",
+            "ÈıÏà²İ",
+            "ÎÖÍÁÀ¼",
+            "µØÉúÁÛ",
+            "ºìÖíÁı",
+            "ÁúÕÆ¡¤¦Á",
+            "ÁúÕÆ¡¤¦Â",
+            "ÁúÕÆ¡¤¦Ã",
+            "ç²Á«",
+            "ÇæÓğ",
+            "¨~¨~"
+        };
+
+        UI.Instance.ShowLog(string.Format("+{0}¸ö{1}µÄÖÖ×Ó", number, TypeName[id - 1]));
         plantSeedNumbers[id] += number;
         for (int idx=0;idx<3;++idx)
         {
@@ -139,8 +155,9 @@ public class Sidebar : MonoBehaviour
                 SubSidebarImage im = subImg.GetComponent<SubSidebarImage>();
                 if(im.id==id)
                 {
-                    int value = int.Parse(im.number.GetComponent<TMP_Text>().text);
-                    number = Mathf.Max(0, value + number);
+                    // int value = int.Parse(im.number.GetComponent<TMP_Text>().text);
+                    // number = Mathf.Max(0, value + number);
+                    number = plantSeedNumbers[id];
                     im.number.GetComponent<TMP_Text>().text = $"{number}";
                     if(number==0)
                     {
@@ -199,7 +216,7 @@ public class Sidebar : MonoBehaviour
         AddPlant(3, 9);
         AddPlant(3, 10);
         AddPlant(3, 11);
-        Enumerable.Range(0, 11).ToList().ForEach(i => SetSeedNumber(i, 99));
+        Enumerable.Range(0, 11).ToList().ForEach(i => SetSeedNumber(i + 1, 0));
     }
     public void DebugSetCurrentPlantIdTo233()
     {

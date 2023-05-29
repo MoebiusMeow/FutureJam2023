@@ -7,7 +7,7 @@ using static UnityEngine.GraphicsBuffer;
 public class CameraFocus : MonoBehaviour
 {
 
-    public float rotationX = 0.0f;
+    public float rotationX = 40.0f;
     public float rotationY = 40.0f;
     public float xRotateSpeed = 200; 
     public float yRotateSpeed = 200;

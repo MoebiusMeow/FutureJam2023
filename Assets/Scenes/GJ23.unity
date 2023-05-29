@@ -217,6 +217,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 01908da0a067abb43b25828ffc25a36b, type: 3}
+--- !u!1 &22664796 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1318806852452955646, guid: 701c84e34e538c240a89348f8d19e85d,
+    type: 3}
+  m_PrefabInstance: {fileID: 1480868828}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &23088840
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2079,6 +2085,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6099000461784513176, guid: 76eb124777e795540a88ccede032313f,
+        type: 3}
+      propertyPath: InfoBar
+      value: 
+      objectReference: {fileID: 22664796}
     - target: {fileID: 6099000461784513176, guid: 76eb124777e795540a88ccede032313f,
         type: 3}
       propertyPath: SideBar
@@ -4806,6 +4817,31 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2115230863}
     m_Modifications:
+    - target: {fileID: 415466288654134561, guid: 701c84e34e538c240a89348f8d19e85d,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 415466288654134561, guid: 701c84e34e538c240a89348f8d19e85d,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 415466288654134561, guid: 701c84e34e538c240a89348f8d19e85d,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 415466288654134561, guid: 701c84e34e538c240a89348f8d19e85d,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 415466288654134561, guid: 701c84e34e538c240a89348f8d19e85d,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 490750785649288773, guid: 701c84e34e538c240a89348f8d19e85d,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -5545,6 +5581,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ui: {fileID: 1750506421}
   sidebar: {fileID: 1480868836}
+  tilemap: {fileID: 1846930012}
+  downedEventC3: 0
+  days: 0
+  fruitRequired: 0
+  loopTriggered: 0
 --- !u!4 &1703749714
 Transform:
   m_ObjectHideFlags: 0

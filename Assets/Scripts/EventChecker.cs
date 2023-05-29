@@ -16,13 +16,15 @@ public class EventChecker : MonoBehaviour
     bool downedEventC2 = false;
     public bool downedEventC3 = false;
     bool downedEventLoop = false;
-    Dictionary<int, int> plantCount;
+    Dictionary<int, int> plantCount = new();
     public int days = 0;
+    public int fruitRequired = 0;
     public bool loopTriggered = false;
 
     void Start()
     {
         Instance = this;
+        fruitRequired = (int)Mathf.Floor(20 * Mathf.Log(3 - 1.5f));
         StartCoroutine(DailyCheck());
         StartCoroutine(Check());
     }
@@ -34,6 +36,7 @@ public class EventChecker : MonoBehaviour
         {
             var v = tilemap.GetTile(k.Item1, k.Item2);
             if (v == null) continue;
+            if (v.Plant == null) continue;
             int type = v.Plant.GetComponent<Plant>().typeId;
             plantCount[type] = plantCount.GetValueOrDefault(type, 0) + 1;
         }
@@ -41,7 +44,7 @@ public class EventChecker : MonoBehaviour
 
     int GetFruitCount()
     {
-        return 999;
+        return ui.infobar.GetComponent<Infobar>().fruit_cnt;
     }
 
     IEnumerator DailyCheck()
@@ -53,8 +56,9 @@ public class EventChecker : MonoBehaviour
             var X = Mathf.Floor(20 * Mathf.Log(3 * days - 1.5f));
             if (GetFruitCount() >= X)
             {
-                ui.Popup("一天结束了…", "旅行令龙饥饿，它需要果实。", string.Format("交付 {} 果实", X));
+                ui.Popup("一天结束了…", "旅行令龙饥饿，它需要果实。", string.Format("交付 {0} 果实", X));
                 while (!ui.EventAllClear()) yield return new WaitForEndOfFrame();
+                ui.infobar.GetComponent<Infobar>().fruit_cnt -= (int)X;
 
                 if (Random.value <= 0.1)
                 {
@@ -71,6 +75,7 @@ public class EventChecker : MonoBehaviour
                 Application.Quit();
                 yield break;
             }
+            fruitRequired = (int)Mathf.Floor(20 * Mathf.Log(3 * (days + 1) - 1.5f));
         }
     }
 
@@ -79,6 +84,7 @@ public class EventChecker : MonoBehaviour
         while (true)
         {
             UpdatePlantCount();
+            Debug.Log(plantCount);
             if (!downedEvent1)
             {
                 ui.Popup("植物是这样种的！（1/2）", "打开肥力植物背包，试着种一棵肥肥豆吧！单击选中植物，Q/E键旋转，再次单击确认种植。", "收下 10 肥肥豆的种子");

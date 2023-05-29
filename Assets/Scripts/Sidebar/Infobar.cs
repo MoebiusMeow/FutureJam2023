@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
+using Unity.VisualScripting;
 
 /*
  * public void SetFruit(int a, int b);
@@ -47,6 +48,9 @@ public class Infobar : MonoBehaviour
         else run.GetComponent<Button>().interactable = false;
         if (spd == 1) fast.GetComponent<Image>().sprite = sprite1x;
         else fast.GetComponent<Image>().sprite = sprite2x;
+
+        SetFruit(fruit_cnt, EventChecker.Instance.fruitRequired);
+        SetDay(EventChecker.Instance.days + 1);
     }
 
     // interface starts
@@ -72,6 +76,7 @@ public class Infobar : MonoBehaviour
     public void SetSpeed(int speed)
     {
         spd = speed;
+        Time.timeScale = speed;
     }
     // interface ends
 

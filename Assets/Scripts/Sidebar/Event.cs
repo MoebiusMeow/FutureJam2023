@@ -24,6 +24,7 @@ public class Event : MonoBehaviour
     {
         parent.eventCount -= 1;
         obj.SetActive(false);
+        Time.timeScale = 1;
     }
 
     public void Popup(string title, string intro, string confirm)
@@ -32,5 +33,6 @@ public class Event : MonoBehaviour
         introText.GetComponent<TMP_Text>().text = intro;
         buttonText.GetComponent<TMP_Text>().text = confirm;
         obj.SetActive(true);
+        Time.timeScale = 0;
     }
 }

@@ -458,7 +458,10 @@ public class HexTilemap : MonoBehaviour
                         // Debug.LogFormat("{0:d},{1:d}:{2:s}", q, r, fg.ToString());
                         if (fg)
                         {
-                            fg &= AddPlantTemporary(q, r, plant, rotateCnt);
+                            bool noloop = AddPlantTemporary(q, r, plant, rotateCnt);
+                            fg &= noloop;
+                            if (!noloop)
+                                EventChecker.Instance.loopTriggered = true;
                         }
                         if (Input.GetMouseButtonDown(0)) //×ó¼üµã»÷
                         { 
@@ -528,6 +531,13 @@ public class HexTilemap : MonoBehaviour
                 }
             }
         }
+
+    }
+
+
+    private void FixedUpdate()
+    {
+        
         ClearAllTempValue();
         foreach (var Tile in tiles.Values)
         {
@@ -556,7 +566,7 @@ public class HexTilemap : MonoBehaviour
                                 c_seed.SetInfoBar(InfoBar);
                             }
                         }
-                        var _seed = seed.GetComponent<Seed>();
+                        var _seed = seed.GetComponentInChildren<Seed>();
                         if (_seed != null)
                         {
                             real_seed = _seed;
@@ -577,12 +587,5 @@ public class HexTilemap : MonoBehaviour
                 }
             }
         }
-
-    }
-
-
-    private void FixedUpdate()
-    {
-        
     }
 }

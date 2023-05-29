@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 
 public class Seed : MonoBehaviour
@@ -54,7 +53,8 @@ public class Seed : MonoBehaviour
             Destroy(gameObject, 3.0f);
             if (sidebar)
             {
-                sidebar.SetSeedNumber(plantId + 1, sidebar.GetSeedNumber(plantId + 1) + seed_cnt);
+                // sidebar.SetSeedNumber(plantId + 1, sidebar.GetSeedNumber(plantId + 1) + seed_cnt);
+                sidebar.AddSeedNumber(plantId + 1, seed_cnt);
                 infobar.fruit_cnt += fruit_cnt;
             }
                

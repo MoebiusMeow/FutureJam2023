@@ -16,6 +16,7 @@ using TMPro;
 
 public class UI : MonoBehaviour
 {
+    public static UI Instance { get; private set; }
     public GameObject eventPrefab, logPrefab;
     public GameObject infobar;
     public GameObject logs;
@@ -23,7 +24,7 @@ public class UI : MonoBehaviour
 
     void Start()
     {
-
+        Instance = this;
     }
 
     // Update is called once per frame
@@ -34,7 +35,7 @@ public class UI : MonoBehaviour
 
     public bool EventAllClear()
     {
-        return eventCount == 0;
+        return eventCount <= 0;
     }
 
     public void Popup(string title, string intro, string confirm)

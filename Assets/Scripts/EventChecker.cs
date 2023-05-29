@@ -13,8 +13,10 @@ public class EventChecker : MonoBehaviour
     bool downedEventC1 = false;
     bool downedEventC2 = false;
     bool downedEventC3 = false;
+    bool downedEventLoop = false;
     Dictionary<int, int> plantCount;
     public int days = 0;
+    public bool loopTriggered = false;
 
     void Start()
     {
@@ -40,6 +42,7 @@ public class EventChecker : MonoBehaviour
             yield return new WaitForSeconds(120);
             days += 1;
             var X = Mathf.Floor(20 * Mathf.Log(3 * days - 1.5f));
+            // if (ui.infobar.GetComponent<Infobar>().ft)
         }
     }
 

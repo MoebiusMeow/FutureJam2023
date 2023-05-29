@@ -5,6 +5,7 @@ using UnityEngine.Rendering;
 
 public class Plant : MonoBehaviour
 {
+    public int typeId = 0;
     [Header("∑ ¡¶–Ë«Û")]
     public List<Vector3Int> fertilityAcquire = new List<Vector3Int>();
 

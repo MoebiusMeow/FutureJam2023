@@ -111,6 +111,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a913b476da424df4fb8357d9fa100814, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  typeId: 3
   fertilityAcquire:
   - {x: 0, y: 0, z: 1}
   fertilityEffect: []

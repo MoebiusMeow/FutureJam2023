@@ -6,13 +6,26 @@ public class EventChecker : MonoBehaviour
 {
     public UI ui;
     public Sidebar sidebar;
+    public HexTilemap tilemap;
     bool downedEvent1 = false;
     bool downedEvent2 = false;
     bool downedEvent3 = false;
+    Dictionary<int, int> plantCount;
 
     void Start()
     {
         StartCoroutine(Check());
+    }
+
+    void UpdatePlantCount()
+    {
+        plantCount.Clear();
+        foreach (var k in tilemap.tiles.Keys)
+        {
+            var v = tilemap.GetTile(k.Item1, k.Item2);
+            if (v == null) continue;
+            // 反正是计一下数
+        }
     }
 
     IEnumerator Check()

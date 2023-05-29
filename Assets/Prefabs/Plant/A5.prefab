@@ -127,8 +127,10 @@ MonoBehaviour:
   - {x: 6, y: 0, z: 32}
   - {x: 7, y: 0, z: 64}
   - {x: 8, y: 0, z: 128}
-  TimeToBearFruit: 0
+  TimeToBearFruit: 40
   timeGrown: 0
   maxheath: 2
   health: 2
   rotateCnt: 0
+  SeedPrefab: {fileID: 7907673064300651175, guid: 0ec5beb3a64469f4390c450f6a61d861,
+    type: 3}

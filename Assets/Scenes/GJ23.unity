@@ -2083,7 +2083,7 @@ PrefabInstance:
         type: 3}
       propertyPath: SideBar
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1480868830}
     - target: {fileID: 6099000461784513176, guid: 76eb124777e795540a88ccede032313f,
         type: 3}
       propertyPath: CellSize
@@ -5221,6 +5221,12 @@ PrefabInstance:
 --- !u!224 &1480868829 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5075421210890957250, guid: 701c84e34e538c240a89348f8d19e85d,
+    type: 3}
+  m_PrefabInstance: {fileID: 1480868828}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1480868830 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7711252089923581692, guid: 701c84e34e538c240a89348f8d19e85d,
     type: 3}
   m_PrefabInstance: {fileID: 1480868828}
   m_PrefabAsset: {fileID: 0}

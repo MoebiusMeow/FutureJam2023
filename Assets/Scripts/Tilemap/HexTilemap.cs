@@ -290,6 +290,7 @@ public class HexTilemap : MonoBehaviour
         }
         if (plantIndex < 0)
         {
+            CurrentPlantIndex = plantIndex;
             return;
         }
         if (plantIndex >= 0 && plantIndex < PlantPrefab.Count() && PlantPrefab[plantIndex] != null)
@@ -415,7 +416,7 @@ public class HexTilemap : MonoBehaviour
                     int q, r;
                     (q, r) = (tile.coordQ, tile.coordR);
                     // Debug.Log((q, r));
-
+                    Debug.Log($"{CurrentPlantIndex}");
                     if (CurrentPlantIndex == -2)// 铲除植物
                     {
                         ClearAllTempValue();
@@ -524,13 +525,8 @@ public class HexTilemap : MonoBehaviour
                 }
             }
         }
-        
-    }
-
-
-    private void FixedUpdate()
-    {
-        foreach(var Tile in tiles.Values)
+        ClearAllTempValue();
+        foreach (var Tile in tiles.Values)
         {
             var tile = Tile.GetComponent<HexTile>();
             if (tile != null && tile.Plant != null)
@@ -538,9 +534,16 @@ public class HexTilemap : MonoBehaviour
                 var plant = tile.Plant.GetComponent<Plant>();
                 if (plant != null && !tile.CheckPlantCanGrow(plant, plant.rotateCnt))
                 {
-                    plant.LooseHelth(Time.fixedDeltaTime); // 减少枯萎植物的生命值
+                    plant.LooseHelth(Time.deltaTime); // 减少枯萎植物的生命值
                 }
             }
         }
+
+    }
+
+
+    private void FixedUpdate()
+    {
+        
     }
 }

@@ -95,10 +95,11 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 447a6eab767a86648b20dcb3776264cd, type: 3}
   - {fileID: 21300000, guid: 23cc33ea31319a34dbd76ac030bae8f7, type: 3}
   - {fileID: 21300000, guid: 2e5b3907f6c67ce44b7762ebe2dfbb82, type: 3}
-  - {fileID: 21300000, guid: 1199c7eb6d3ab894a8600683c5011f31, type: 3}
+  - {fileID: 21300000, guid: dabb4762a09de3a47b8c60e7ba12a13c, type: 3}
   - {fileID: 21300000, guid: 87bc88ed5bc04c54d8da5b1adf95749c, type: 3}
   images: []
   currentPlantId: 0
+  fruit_cnt: 0
 --- !u!222 &2643224548155010140
 CanvasRenderer:
   m_ObjectHideFlags: 0

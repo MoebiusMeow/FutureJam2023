@@ -113,9 +113,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   typeId: 10
   fertilityAcquire:
-  - {x: 1, y: -1, z: 40}
-  - {x: 1, y: 0, z: 40}
-  - {x: 0, y: 0, z: 40}
+  - {x: 1, y: -1, z: 12}
+  - {x: 1, y: 0, z: 12}
+  - {x: 0, y: 0, z: 12}
   fertilityEffect: []
   useX: 0
   XPos: {x: 0, y: 0}
@@ -125,3 +125,4 @@ MonoBehaviour:
   maxheath: 20
   health: 20
   rotateCnt: 0
+  SeedPrefab: {fileID: 0}
